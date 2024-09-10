@@ -1,0 +1,29 @@
+<div [ngClass]="{'admin-approval-container': true, 'expanded': isSidebarExpanded}">
+  <table class="admin-approval-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Birth Date</th>
+        <th>Request Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let admin of pendingAdmins">
+        <td>{{ admin.id }}</td>
+        <td>{{ admin.name }}</td>
+        <td>{{ admin.email }}</td>
+        <td>{{ admin.phoneNumber }}</td>
+        <td>{{ admin.birthDate | date }}</td>
+        <td>{{ admin.requestDate | date }}</td>
+        <td>
+          <button (click)="approveAdmin(admin.id)">Approve</button>
+          <button (click)="rejectAdmin(admin.id)">Reject</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

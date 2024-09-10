@@ -1,0 +1,25 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.content-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  transition: margin-left 0.3s;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .admin-approval-container {
+    left: 0;
+    width: 100%;
+  }
+}

@@ -1,0 +1,75 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+}
+
+.register-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3f8fb;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.register-container {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.register-container h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+input, select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+button {
+  padding: 15px;
+  background-color: #3b83a5;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #7e9ba6;
+}
+
+.register-container p {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-container a {
+  color: #5c7abc;
+  text-decoration: none;
+}
+
+.register-container a:hover {
+  text-decoration: underline;
+}
