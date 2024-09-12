@@ -1,0 +1,40 @@
+.welcome-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5em;
+  color: white;
+}
+
+.welcome-description {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.welcome-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+ul {
+  display: flex;
+  align-items: center;
+}
+
+li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: space-evenly;
+}
+
+li span {
+  font-size: 3em;
+}

@@ -1,0 +1,47 @@
+.input-component {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  border: 0.125em solid transparent;
+  border-radius: 1em;
+  padding: 0.5em 0.75em;
+  background-color: #efefef;
+  gap: 0.25em;
+}
+
+.focused {
+  border: 0.125em solid blue;
+}
+
+.input-container label {
+  color: #6f6f6f;
+  font-size: 0.9em;
+}
+
+.input-container input {
+  background-color: #efefef;
+  border: none;
+  font-size: 1em;
+}
+
+.input-container input:focus {
+  border: none;
+}
+
+.input-message {
+  padding-left: 0.75em;
+}
+
+.error-message {
+  color: red;
+}
+.success-message {
+  color: green;
+}
+.info-message {
+  color: blue;
+}

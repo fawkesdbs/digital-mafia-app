@@ -1,0 +1,56 @@
+<div
+  class="sidebar"
+  [class.expanded]="isSidebarExpanded"
+  (mouseover)="toggleSidebar()"
+  (mouseout)="toggleSidebar()"
+>
+  <ul>
+    <li>
+      <a [routerLink]="['/dashboard']"
+        ><span class="material-symbols-outlined"> finance </span>
+        <span class="text" *ngIf="isSidebarExpanded">Dashboard</span></a
+      >
+    </li>
+    <li>
+      <a [routerLink]="['/profile']"
+        ><span class="material-symbols-outlined"> person </span>
+        <span class="text" *ngIf="isSidebarExpanded">Profile</span></a
+      >
+    </li>
+    <li>
+      <a [routerLink]="['/time-tracker']"
+        ><span class="material-symbols-outlined"> timeline </span>
+        <span class="text" *ngIf="isSidebarExpanded">Time Tracker</span></a
+      >
+    </li>
+    <li>
+      <a [routerLink]="['/calendar']"
+        ><span class="material-symbols-outlined"> event </span>
+        <span class="text" *ngIf="isSidebarExpanded">Calendar</span></a
+      >
+    </li>
+
+    <!-- Admin-specific options -->
+    <ng-container *ngIf="isAdmin">
+      <li>
+        <a [routerLink]="['/admin-approval']"
+          ><span class="material-symbols-outlined"> admin_panel_settings </span>
+          <span class="text" *ngIf="isSidebarExpanded">Admin Approval</span></a
+        >
+      </li>
+      <li>
+        <a [routerLink]="['/user-overview']"
+          ><span class="material-symbols-outlined"> group </span>
+          <span class="text" *ngIf="isSidebarExpanded">User Overview</span></a
+        >
+      </li>
+    </ng-container>
+
+    <li class="logout-btn">
+      <button (click)="logout()">
+        <span class="material-symbols-outlined logout-icon"> logout </span>
+        <span class="text" *ngIf="isSidebarExpanded">Logout</span>
+      </button>
+    </li>
+  </ul>
+</div>

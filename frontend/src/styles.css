@@ -1,0 +1,106 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./assets/css/angular-calendar.css";
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"],
+button[disabled],
+html input[disabled],
+button::-moz-focus-inner,
+input::-moz-focus-inner,
+input[type="checkbox"],
+input[type="radio"],
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button,
+input[type="search"],
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+body {
+  background-color: #f4f6ff;
+}
+
+ul {
+  list-style-type: none;
+}
+
+select {
+  font-size: 1em;
+  border: 0.125em solid transparent;
+  border-radius: 1em;
+  padding: 0.5em 0.75em;
+  background-color: #efefef;
+  gap: 0.25em;
+}
+
+.primary-btn {
+  color: white;
+  background-color: #1a3fa3;
+  font-size: 1em;
+  border-radius: 1em;
+  padding: 0.5em 0.75em;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background-color: #5d8fe5;
+}
+
+.secondary-btn {
+  color: black;
+  background-color: #d5d7dc;
+  font-size: 1em;
+  border-radius: 1em;
+  padding: 0.5em 0.75em;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  background-color: #b3bbc8;
+}
+
+.danger-btn {
+  color: white;
+  background-color: #a31a1a;
+  font-size: 1em;
+  border-radius: 1em;
+  padding: 0.5em 0.75em;
+  cursor: pointer;
+}
+
+.danger-btn:hover {
+  background-color: #e55d5d;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+  color: #5d8fe5;
+  text-decoration: none;
+}

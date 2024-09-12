@@ -1,0 +1,50 @@
+.sign-up-container {
+  margin: auto;
+  width: 50vw;
+  padding: 2em;
+  gap: 0.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form {
+  gap: 0.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+app-input {
+  flex: 1 1 auto;
+}
+
+.user-full-name {
+  width: 100%;
+  gap: 0.5em;
+  display: flex;
+}
+
+.user-contact {
+  width: 100%;
+  gap: 0.5em;
+  display: flex;
+  flex-direction: column;
+}
+
+.sign-up-select {
+  width: 100%;
+  gap: 0.5em;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-password {
+  width: 100%;
+  gap: 0.5em;
+  display: flex;
+}
+
+.primary-btn {
+  width: 100%;
+}

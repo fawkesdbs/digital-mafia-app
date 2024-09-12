@@ -1,0 +1,72 @@
+/* Sidebar styles */
+.sidebar {
+  width: 4em;
+  height: 100vh;
+  background: linear-gradient(135deg, #1e3470, #1a3fa3, #90a0e0);
+  color: #fff;
+  overflow-x: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: width 0.3s;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.sidebar:hover {
+  width: 12em;
+  background-color: #7e9ba6;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  padding: 1.25em;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar ul li a,
+.sidebar ul li button {
+  font-size: 1em;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.sidebar ul li a i,
+.sidebar ul li button i {
+  margin-right: 10px;
+}
+
+.sidebar ul li a .text,
+.sidebar ul li button .text {
+  overflow: hidden;
+}
+
+.sidebar:hover ul li a .text,
+.sidebar:hover ul li button .text {
+  padding-left: 0.5em;
+  white-space: nowrap;
+}
+
+.logout-btn {
+  position: fixed;
+  bottom: 0;
+}
+
+.logout-icon {
+  color: #a31a1a;
+}
+
+.logout-icon:hover {
+  color: #e55d5d;
+}

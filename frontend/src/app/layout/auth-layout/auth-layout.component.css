@@ -1,0 +1,33 @@
+/* Layout styles */
+.layout-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f4f6ff;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.welcome-section,
+.form-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.welcome-section {
+  background-color: #f3f8fb;
+  background: linear-gradient(135deg, #1e3470, #1a3fa3, #90a0e0);
+  background-blend-mode: multiply;
+  padding: 5em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0 1em 1em 0;
+}
+
+.form-section {
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

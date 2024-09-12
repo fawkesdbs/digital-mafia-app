@@ -1,0 +1,25 @@
+<div class="input-component">
+  <div class="input-container" [ngClass]="{ focused: isFocused }">
+    <label *ngIf="label">{{ label }}</label>
+    <input
+      [type]="type"
+      [value]="value"
+      [placeholder]="placeholder"
+      (input)="onValueChange($event)"
+      [required]="required"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+    />
+  </div>
+  <div
+    class="input-message"
+    *ngIf="message"
+    [ngClass]="{
+      'error-message': messageType === 'error',
+      'success-message': messageType === 'success',
+      'info-message': messageType === 'info'
+    }"
+  >
+    {{ message }}
+  </div>
+</div>
