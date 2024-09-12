@@ -41,7 +41,7 @@ export class LoginComponent {
           );
           const userId = decodedToken.id;
           await this.userService
-            .getUserProfile(userId)
+            .getUserRole(userId)
             .pipe(
               catchError((error) => {
                 console.error('Error fetching user profile:', error);

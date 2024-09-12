@@ -1,1 +1,85 @@
-<p>profile works!</p>
+<div class="profile-container">
+  <form (ngSubmit)="onSubmit()" #profileForm="ngForm">
+    <div class="user-full-name profile-details">
+      <div class="profile-detail-group">Name</div>
+      <app-input
+        label="Name"
+        placeholder="e.g. John"
+        [(value)]="updatedUser.name"
+        [required]="true"
+      ></app-input>
+      <app-input
+        label="Surname"
+        placeholder="e.g. Doe"
+        [(value)]="updatedUser.surname"
+        [required]="true"
+      ></app-input>
+    </div>
+    <div class="user-contact profile-details">
+      <div class="profile-detail-group">Contact Details</div>
+      <app-input
+        type="email"
+        label="Email"
+        placeholder="e.g. example@mail.com"
+        [(value)]="updatedUser.email"
+        [required]="true"
+      ></app-input>
+      <app-input
+        label="Phone Number"
+        placeholder="e.g. 0123456789"
+        [(value)]="updatedUser.phoneNumber"
+        [required]="true"
+      ></app-input>
+    </div>
+    <div class="birthdate-role-container">
+      <div class="sign-up-select profile-details">
+        <div class="profile-detail-group">Birth Date</div>
+        <app-input
+          type="date"
+          label="Birth Date"
+          [(value)]="updatedUser.birthDate"
+          [required]="true"
+        ></app-input>
+      </div>
+      <div class="sign-up-select profile-details">
+        <div class="profile-detail-group">Role</div>
+        <select
+          id="role"
+          name="role"
+          [(ngModel)]="updatedUser.role"
+          [disabled]="user.role !== 'admin'"
+        >
+          <option hidden disabled selected value>{{ user.role }}</option>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </div>
+    <div class="user-password profile-details">
+      <div class="profile-detail-group">Change Password</div>
+      <app-input
+        class="current-password"
+        type="password"
+        label="Current Password"
+        placeholder="e.g. password123"
+        [(value)]="updatedUser.currentPassword"
+        [required]="false"
+      ></app-input>
+      <app-input
+        type="password"
+        label="New Password"
+        placeholder="e.g. password123"
+        [(value)]="updatedUser.newPassword"
+        [required]="false"
+      ></app-input>
+      <app-input
+        type="password"
+        label="Confirm Password"
+        placeholder="e.g. password123"
+        [(value)]="confirmPassword"
+        [required]="false"
+      ></app-input>
+    </div>
+    <button type="submit" class="primary-btn">Update</button>
+  </form>
+</div>

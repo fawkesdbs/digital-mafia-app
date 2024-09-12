@@ -94,16 +94,60 @@ const loginUser = async (req, res) => {
   }
 };
 
+const getProfile = async (req, res) => {
+  const { id } = req.params;
+  const currentUser = await User.findOne({ where: { id } });
+  if (!currentUser) {
+    return res.status(401).json({ message: "User not found" });
+  } else {
+    return res.status(200).json({ user: currentUser });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  const { id } = req.params;
+  const { currentPassword, newPassword, ...updatedData } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { id } });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    if (currentPassword && newPassword) {
+      // Check if the current password matches
+      const isMatch = await verifyHashedData(currentPassword, user.password);
+      if (!isMatch) {
+        return res
+          .status(401)
+          .json({ success: false, message: "Current password is incorrect" });
+      }
+
+      // Update password if a new password is provided
+      const hashedPassword = await hashData(newPassword);
+      updatedData.password = hashedPassword;
+    }
+
+    // Update the user's data
+    await user.update(updatedData);
+    return res
+      .status(200)
+      .json({ success: true, message: "Profile updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 const getUserRole = async (req, res) => {
   const { id } = req.params;
   const currentUser = await User.findOne({ where: { id } });
   if (!currentUser) {
-    console.log("User not found");
-
     return res.status(401).json({ message: "User not found" });
   } else {
-    console.log("User role found");
-
     return res.status(200).json({ role: currentUser.role });
   }
 };
@@ -112,5 +156,7 @@ module.exports = {
   checkUser,
   registerUser,
   loginUser,
+  getProfile,
+  updateProfile,
   getUserRole,
 };

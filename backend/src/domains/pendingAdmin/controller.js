@@ -30,7 +30,6 @@ const registerAdmin = async (req, res) => {
       password: hashedPassword,
       requestDate,
     });
-    console.log(newAdmin);
 
     res.status(201).send("Admin waiting for approval");
   } catch (error) {

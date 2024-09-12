@@ -32,16 +32,24 @@ export class UserService {
     return this.http.post<any>(`${this.userApiUrl}/login`, credentials);
   }
 
+  getUserRole(userId: string) {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.userApiUrl}/user-role/${userId}`, {
+      headers,
+    });
+  }
+
   getUserProfile(userId: string) {
     const token = localStorage.getItem('authToken'); // Fetch the token from localStorage
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); // Add token to headers
-    return this.http.get<any>(`${this.userApiUrl}/user-role/${userId}`, {
+    return this.http.get<any>(`${this.userApiUrl}/profile/${userId}`, {
       headers,
     }); // Make request with headers
   }
 
-  updateUserProfile(userProfile: any): Observable<any> {
-    return this.http.put(`${this.userApiUrl}/profile`, userProfile, {
+  updateUserProfile(userId: string, userData: any): Observable<any> {
+    return this.http.put(`${this.userApiUrl}/profile/${userId}`, userData, {
       headers: this.getAuthHeaders(),
     });
   }
@@ -80,9 +88,5 @@ export class UserService {
       Authorization: `Bearer ${token}`,
       ContentType: 'application/json',
     });
-  }
-
-  getUserRole(id: string): Observable<string> {
-    return this.http.get<string>(`${this.userApiUrl}/user-role?id=${id}`);
   }
 }

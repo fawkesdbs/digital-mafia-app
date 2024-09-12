@@ -1,0 +1,67 @@
+form {
+  gap: 0.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-details {
+  position: relative;
+  padding: 0.5em;
+  padding-top: 1.5em;
+  border: 0.125em solid #1e3470;
+  border-radius: 0.5em;
+}
+
+.profile-detail-group {
+  position: absolute;
+  top: 0;
+}
+
+app-input {
+  flex: 1 1 auto;
+}
+
+.user-full-name {
+  width: 100%;
+  gap: 0.5em;
+  display: flex;
+}
+
+.user-contact {
+  width: 100%;
+  gap: 0.5em;
+  display: flex;
+}
+
+.sign-up-select {
+  width: 100%;
+  gap: 0.5em;
+  display: flex;
+  flex-direction: column;
+}
+
+.birthdate-role-container {
+  width: 100%;
+  gap: 0.5em;
+  display: flex;
+}
+
+select {
+  height: 4em;
+}
+
+.user-password {
+  width: 100%;
+  gap: 0.5em;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.current-password {
+  flex-basis: 100%;
+}
+
+.primary-btn {
+  width: 100%;
+}

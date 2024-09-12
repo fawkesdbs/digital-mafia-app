@@ -1,14 +1,12 @@
 .admin-approval-container {
-  position: absolute;
-  top: 0px;
-  left: 60px;
-  width: calc(100% - 60px); /* Table takes full width minus the sidebar */
+  width: 100%;
   transition: left 0.3s, width 0.3s;
   box-sizing: border-box;
   background: linear-gradient(135deg, #1e3470, #1a3fa3, #90a0e0);
 }
 
 table {
+  border: 0.125em solid #1e3470;
   width: 100%;
   border-collapse: collapse;
   margin: 0;
