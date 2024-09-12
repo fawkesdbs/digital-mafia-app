@@ -47,7 +47,7 @@
           id="role"
           name="role"
           [(ngModel)]="updatedUser.role"
-          [disabled]="user.role !== 'admin'"
+          [disabled]="currentUserRole !== 'admin'"
         >
           <option hidden disabled selected value>{{ user.role }}</option>
           <option value="user">User</option>
@@ -55,7 +55,7 @@
         </select>
       </div>
     </div>
-    <div class="user-password profile-details">
+    <div class="user-password profile-details" *ngIf="isCurrentUser">
       <div class="profile-detail-group">Change Password</div>
       <app-input
         class="current-password"

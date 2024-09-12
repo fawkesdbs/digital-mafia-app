@@ -12,7 +12,7 @@
       >
     </li>
     <li>
-      <a [routerLink]="['/profile']"
+      <a (click)="goToProfile()"
         ><span class="material-symbols-outlined"> person </span>
         <span class="text" *ngIf="isSidebarExpanded">Profile</span></a
       >

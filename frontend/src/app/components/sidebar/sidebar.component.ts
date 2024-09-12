@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { CustomJwtPayload } from '../../interfaces/jwt.interfaces';
+import * as jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,6 +13,10 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
+  token = localStorage.getItem('authToken') || '';
+  decodedToken: CustomJwtPayload = jwt_decode.jwtDecode(this.token);
+  currentUserId = this.decodedToken.id;
+
   isSidebarExpanded = false;
   isAdmin: boolean = false;
 
@@ -22,6 +28,12 @@ export class SidebarComponent implements OnInit {
 
   toggleSidebar(): void {
     this.isSidebarExpanded = !this.isSidebarExpanded;
+  }
+
+  goToProfile() {
+    if (this.currentUserId !== null) {
+      this.router.navigate(['/profile', this.currentUserId]);
+    }
   }
 
   logout(): void {

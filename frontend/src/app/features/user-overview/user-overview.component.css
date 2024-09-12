@@ -1,0 +1,50 @@
+.user-overview-container {
+  width: 100%;
+  transition: left 0.3s, width 0.3s;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #1e3470, #1a3fa3, #90a0e0);
+}
+
+table {
+  border: 0.125em solid #1e3470;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+th,
+td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #1a3fa3; /* Background color for headers */
+  color: #fff;
+  font-weight: bold;
+}
+
+td {
+  background-color: #f4f6ff;
+}
+
+tr:hover td {
+  background-color: #e0f7fa;
+}
+
+.sidebar:hover ~ .user-overview-container {
+  left: 200px;
+  width: calc(100% - 200px);
+}
+
+button {
+  margin-right: 0.5em;
+}
+
+@media (max-width: 768px) {
+  .user-overview-container {
+    left: 0;
+    width: 100%;
+  }
+}

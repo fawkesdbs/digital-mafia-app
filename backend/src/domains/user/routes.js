@@ -7,8 +7,9 @@ const {
   getProfile,
   updateProfile,
   getUserRole,
+  getUsers,
 } = require("./controller");
-const { verifyToken } = require("./../../middleware/auth");
+const { verifyToken, checkAdmin } = require("./../../middleware/auth");
 
 router.post("/check-user", checkUser);
 router.post("/register", registerUser);
@@ -16,5 +17,6 @@ router.post("/login", loginUser);
 router.get("/user-role/:id", verifyToken, getUserRole);
 router.get("/profile/:id", verifyToken, getProfile);
 router.put("/profile/:id", verifyToken, updateProfile);
+router.get("/users", verifyToken, checkAdmin, getUsers);
 
 module.exports = router;

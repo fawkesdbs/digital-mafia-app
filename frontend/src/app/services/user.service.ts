@@ -54,6 +54,12 @@ export class UserService {
     });
   }
 
+  getUsers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.userApiUrl}/users`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
   isAdmin(): Observable<boolean> {
     return this.http.get<boolean>(`${this.userApiUrl}/is-admin`, {
       headers: this.getAuthHeaders(),

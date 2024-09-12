@@ -5,6 +5,8 @@ import { InputComponent } from '../../components/input/input.component';
 import * as jwt_decode from 'jwt-decode';
 import { CustomJwtPayload } from '../../interfaces/jwt.interfaces';
 import { catchError, of } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 interface UserProfile {
   name: string;
@@ -24,14 +26,18 @@ interface UpdatedUserProfile extends UserProfile {
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [FormsModule, InputComponent],
+  imports: [CommonModule, FormsModule, InputComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
 export class ProfileComponent implements OnInit {
   token = localStorage.getItem('authToken') || '';
   decodedToken: CustomJwtPayload = jwt_decode.jwtDecode(this.token);
-  userId = this.decodedToken.id;
+  currentUserId = this.decodedToken.id;
+  currentUserRole = this.decodedToken.role;
+
+  isCurrentUser: boolean;
+  userId: string;
 
   user: UserProfile = {
     name: '',
@@ -50,7 +56,10 @@ export class ProfileComponent implements OnInit {
   };
   confirmPassword: string = '';
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private route: ActivatedRoute) {
+    this.userId = this.route.snapshot.paramMap.get('id')!;
+    this.isCurrentUser = this.userId === this.currentUserId;
+  }
 
   ngOnInit(): void {
     this.userService

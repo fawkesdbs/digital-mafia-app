@@ -152,6 +152,33 @@ const getUserRole = async (req, res) => {
   }
 };
 
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: [
+        "id",
+        "name",
+        "surname",
+        "email",
+        "phoneNumber",
+        "birthDate",
+        "role",
+      ],
+    });
+
+    if (!users) {
+      return res.status(404).send("No users found.");
+    }
+
+    return res.json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error.message);
+    if (!res.headersSent) {
+      return res.status(500).send("Error fetching users");
+    }
+  }
+};
+
 module.exports = {
   checkUser,
   registerUser,
@@ -159,4 +186,5 @@ module.exports = {
   getProfile,
   updateProfile,
   getUserRole,
+  getUsers,
 };

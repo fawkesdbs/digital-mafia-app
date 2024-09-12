@@ -1,1 +1,30 @@
-<p>user-overview works!</p>
+<div
+  [ngClass]="{ 'user-overview-container': true, expanded: isSidebarExpanded }"
+>
+  <table class="user-overview-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Birth Date</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.name + " " + user.surname }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phoneNumber }}</td>
+        <td>{{ user.birthDate }}</td>
+        <td>{{ user.role | capitalize }}</td>
+        <td>
+          <button (click)="viewUserProfile(user.id)" class="secondary-btn">
+            View Profile
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
