@@ -32,10 +32,12 @@ export class UserService {
     return this.http.post<any>(`${this.userApiUrl}/login`, credentials);
   }
 
-  getUserProfile() {
+  getUserProfile(userId: string) {
     const token = localStorage.getItem('authToken'); // Fetch the token from localStorage
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); // Add token to headers
-    return this.http.get<any>(`${this.userApiUrl}/user-role`, { headers }); // Make request with headers
+    return this.http.get<any>(`${this.userApiUrl}/user-role/${userId}`, {
+      headers,
+    }); // Make request with headers
   }
 
   updateUserProfile(userProfile: any): Observable<any> {

@@ -5,6 +5,8 @@ import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { catchError, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import * as jwt_decode from 'jwt-decode';
+import { CustomJwtPayload } from '../../interfaces/jwt.interfaces';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +23,8 @@ export class LoginComponent {
 
   constructor(private userService: UserService, private router: Router) {}
 
-  onSubmit() {
-    this.userService
+  async onSubmit() {
+    await this.userService
       .login(this.credentials)
       .pipe(
         catchError((error) => {
@@ -34,9 +36,12 @@ export class LoginComponent {
       .subscribe(async (response) => {
         if (response?.success) {
           localStorage.setItem('authToken', response.token);
-
+          const decodedToken: CustomJwtPayload = jwt_decode.jwtDecode(
+            response.token
+          );
+          const userId = decodedToken.id;
           await this.userService
-            .getUserProfile()
+            .getUserProfile(userId)
             .pipe(
               catchError((error) => {
                 console.error('Error fetching user profile:', error);

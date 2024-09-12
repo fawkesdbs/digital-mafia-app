@@ -75,12 +75,12 @@ const loginUser = async (req, res) => {
     if (user) {
       const storedPassword = user.password;
       const match = await verifyHashedData(password, storedPassword);
-      console.log(match);
-
       if (match) {
         const token = jwt.sign({ id: user.id, role: user.role }, TOKEN_KEY, {
           expiresIn: TOKEN_EXPIRY,
         });
+        console.log("Logged In");
+
         res.status(200).json({ success: true, token });
       } else {
         res.status(401).json({ success: false, message: "Incorrect password" });
@@ -98,8 +98,12 @@ const getUserRole = async (req, res) => {
   const { id } = req.params;
   const currentUser = await User.findOne({ where: { id } });
   if (!currentUser) {
+    console.log("User not found");
+
     return res.status(401).json({ message: "User not found" });
   } else {
+    console.log("User role found");
+
     return res.status(200).json({ role: currentUser.role });
   }
 };
