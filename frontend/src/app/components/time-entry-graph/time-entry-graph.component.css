@@ -10,12 +10,24 @@
   gap: 0.5em;
 }
 
-.custom-range-controls {
+span {
+  display: flex;
+}
+
+.custom-range-controls,
+.graph-toggles {
   display: flex;
   gap: 0.5em;
+  align-items: center;
 }
 
 .chart-graphs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.graphs {
   display: flex;
   width: 100%;
   gap: 0.5em;

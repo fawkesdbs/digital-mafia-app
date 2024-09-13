@@ -19,6 +19,18 @@ export class TimeEntryGraphComponent implements OnInit {
   decodedToken: CustomJwtPayload = jwt_decode.jwtDecode(this.token);
   userId = this.decodedToken.id;
 
+  isShowingHours = true;
+  isShowingProjects = false;
+
+  showHours() {
+    this.isShowingHours = true;
+    this.isShowingProjects = false;
+  }
+  showProjects() {
+    this.isShowingHours = false;
+    this.isShowingProjects = true;
+  }
+
   now = new Date();
   startDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-01`;
   endDate = this.formatDate(this.now);
@@ -46,7 +58,7 @@ export class TimeEntryGraphComponent implements OnInit {
     labels: this.chartLabels,
     datasets: [
       {
-        label: 'Entries',
+        label: 'Projects',
         data: [], // Example data for number of entries
         fill: false,
         borderColor: 'rgba(255, 99, 132, 1)',
@@ -86,7 +98,7 @@ export class TimeEntryGraphComponent implements OnInit {
     plugins: {
       title: {
         display: true,
-        text: 'Jobs Started Per Day', // Title for the line chart
+        text: 'Projects Started Per Day', // Title for the line chart
         font: {
           size: 16,
         },
@@ -114,10 +126,6 @@ export class TimeEntryGraphComponent implements OnInit {
   setTimePeriod(period: string): void {
     const today = new Date();
     switch (period) {
-      case 'today':
-        this.showCustomRange = false;
-        this.startDate = this.endDate = this.formatDate(today);
-        break;
       case 'thisWeek':
         this.showCustomRange = false;
         this.startDate = this.formatDate(this.getStartOfWeek(today));
@@ -185,7 +193,7 @@ export class TimeEntryGraphComponent implements OnInit {
           labels: this.chartLabels,
           datasets: [
             {
-              label: 'Entries',
+              label: 'Projects',
               data: this.chartLabels.map(
                 (date) => groupedByDate[date]?.entryCount || 0
               ),

@@ -1,8 +1,5 @@
 <div class="charts-container">
   <div class="chart-time-periods">
-    <button (click)="setTimePeriod('today')" class="secondary-btn">
-      Today
-    </button>
     <button (click)="setTimePeriod('thisWeek')" class="secondary-btn">
       This Week
     </button>
@@ -18,39 +15,42 @@
     <div *ngIf="showCustomRange" class="custom-range-controls">
       <app-input
         type="date"
-        label="Start Date"
         [(value)]="startDate"
         [required]="true"
       ></app-input>
-      <app-input
-        type="date"
-        label="End Date"
-        [(value)]="endDate"
-        [required]="true"
-      ></app-input>
+      <span class="material-symbols-outlined"> arrow_forward </span>
+      <app-input type="date" [(value)]="endDate" [required]="true"></app-input>
       <button (click)="applyCustomRange()" class="primary-btn">Apply</button>
     </div>
   </div>
 
   <div class="chart-graphs">
-    <div class="chart-graph">
-      <canvas
-        baseChart
-        [data]="barChartData"
-        [options]="chartOptionsBar"
-        type="bar"
-      >
-      </canvas>
+    <div class="graph-toggles">
+      <button class="primary-btn" (click)="showHours()">Hours Worked</button>
+      <button class="primary-btn" (click)="showProjects()">
+        Projects Started
+      </button>
     </div>
+    <div class="graphs">
+      <div *ngIf="isShowingHours" class="chart-graph">
+        <canvas
+          baseChart
+          [data]="barChartData"
+          [options]="chartOptionsBar"
+          type="bar"
+        >
+        </canvas>
+      </div>
 
-    <div class="chart-graph">
-      <canvas
-        baseChart
-        [data]="lineChartData"
-        [options]="chartOptionsLine"
-        type="line"
-      >
-      </canvas>
+      <div *ngIf="isShowingProjects" class="chart-graph">
+        <canvas
+          baseChart
+          [data]="lineChartData"
+          [options]="chartOptionsLine"
+          type="line"
+        >
+        </canvas>
+      </div>
     </div>
   </div>
 </div>
