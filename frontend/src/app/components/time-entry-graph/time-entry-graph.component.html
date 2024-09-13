@@ -1,0 +1,21 @@
+<div class="charts-container">
+  <div class="chart-graph">
+    <canvas
+      baseChart
+      [data]="barChartData"
+      [options]="chartOptionsBar"
+      type="bar"
+    >
+    </canvas>
+  </div>
+
+  <div class="chart-graph">
+    <canvas
+      baseChart
+      [data]="lineChartData"
+      [options]="chartOptionsLine"
+      type="line"
+    >
+    </canvas>
+  </div>
+</div>

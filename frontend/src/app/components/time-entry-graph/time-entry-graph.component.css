@@ -1,0 +1,12 @@
+.charts-container {
+  display: flex;
+  width: 100%;
+  gap: 0.5em;
+}
+
+.chart-graph {
+  flex: 1 1 50%;
+  padding: 0.5em;
+  border: 0.0625em solid #1e3470;
+  border-radius: 0.5em;
+}
