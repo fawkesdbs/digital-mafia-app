@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { TimeEntryService, TimeEntry } from '../../services/time-entry.service';
 import { CustomJwtPayload } from '../../interfaces/jwt.interfaces';
 import * as jwt_decode from 'jwt-decode';
+import * as XLSX from 'xlsx';
 import { InputComponent } from '../../components/input/input.component';
 import { SidebarService } from '../../services/sidebar.service';
 import { FormsModule } from '@angular/forms';
@@ -49,6 +50,18 @@ export class TimeTrackerComponent implements OnInit {
     });
   }
 
+  fileName = 'LogSheet.xlsx';
+
+  exportExcel() {
+    let data = document.getElementById('log-data');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws);
+
+    XLSX.writeFile(wb, this.fileName);
+  }
+
   private isValidTimeEntry(date: string, type: string): boolean {
     const entryDate = new Date(date);
     const currentDate = new Date();
@@ -86,7 +99,10 @@ export class TimeTrackerComponent implements OnInit {
 
   createEntry(): void {
     const entryDate = `${this.date}T${this.time}:00.000+02:00`;
-    if (this.newEntry.type === 'log' && !this.isValidTimeEntry(entryDate, 'log')) {
+    if (
+      this.newEntry.type === 'log' &&
+      !this.isValidTimeEntry(entryDate, 'log')
+    ) {
       alert('Cannot create time entry for the future.');
       return;
     }
