@@ -1,19 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { TimeEntryService } from '../../services/time-entry.service';
-import {
-  ChartConfiguration,
-  ChartData,
-  ChartDataset,
-  ChartOptions,
-} from 'chart.js';
+import { ChartData, ChartOptions } from 'chart.js';
 import { CustomJwtPayload } from '../../interfaces/jwt.interfaces';
 import * as jwt_decode from 'jwt-decode';
+import { InputComponent } from '../input/input.component';
 
 @Component({
   selector: 'app-time-entry-graph',
   standalone: true,
-  imports: [BaseChartDirective],
+  imports: [CommonModule, BaseChartDirective, InputComponent],
   templateUrl: './time-entry-graph.component.html',
   styleUrl: './time-entry-graph.component.css',
 })
@@ -22,9 +19,22 @@ export class TimeEntryGraphComponent implements OnInit {
   decodedToken: CustomJwtPayload = jwt_decode.jwtDecode(this.token);
   userId = this.decodedToken.id;
 
+  isShowingHours = true;
+  isShowingProjects = false;
+
+  showHours() {
+    this.isShowingHours = true;
+    this.isShowingProjects = false;
+  }
+  showProjects() {
+    this.isShowingHours = false;
+    this.isShowingProjects = true;
+  }
+
   now = new Date();
   startDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-01`;
   endDate = this.formatDate(this.now);
+  showCustomRange = false;
 
   // Define the labels (x-axis labels for both charts)
   chartLabels: string[] = [];
@@ -48,7 +58,7 @@ export class TimeEntryGraphComponent implements OnInit {
     labels: this.chartLabels,
     datasets: [
       {
-        label: 'Entries',
+        label: 'Projects',
         data: [], // Example data for number of entries
         fill: false,
         borderColor: 'rgba(255, 99, 132, 1)',
@@ -88,7 +98,7 @@ export class TimeEntryGraphComponent implements OnInit {
     plugins: {
       title: {
         display: true,
-        text: 'Jobs Started Per Day', // Title for the line chart
+        text: 'Projects Started Per Day', // Title for the line chart
         font: {
           size: 16,
         },
@@ -116,14 +126,13 @@ export class TimeEntryGraphComponent implements OnInit {
   setTimePeriod(period: string): void {
     const today = new Date();
     switch (period) {
-      case 'today':
-        this.startDate = this.endDate = this.formatDate(today);
-        break;
       case 'thisWeek':
+        this.showCustomRange = false;
         this.startDate = this.formatDate(this.getStartOfWeek(today));
         this.endDate = this.formatDate(this.getEndOfWeek(today));
         break;
       case 'thisMonth':
+        this.showCustomRange = false;
         this.startDate = this.formatDate(
           new Date(today.getFullYear(), today.getMonth(), 1)
         );
@@ -132,6 +141,7 @@ export class TimeEntryGraphComponent implements OnInit {
         );
         break;
       case 'lastMonth':
+        this.showCustomRange = false;
         const lastMonth = new Date(
           today.getFullYear(),
           today.getMonth() - 1,
@@ -143,23 +153,27 @@ export class TimeEntryGraphComponent implements OnInit {
         );
         break;
       case 'custom':
-        // Handle custom date range logic here
+        this.showCustomRange = !this.showCustomRange;
         break;
       default:
+        this.showCustomRange = false;
         break;
     }
     this.updateCharts();
   }
 
+  applyCustomRange() {
+    this.updateCharts();
+  }
+
   private updateCharts(): void {
-    this.chartLabels = this.generateDateRange(this.startDate);
+    this.chartLabels = this.generateDateRange(this.startDate, this.endDate);
 
     this.timeEntryService
       .getTimeEntries(this.userId, this.startDate, this.endDate)
       .subscribe((entries) => {
         const groupedByDate = this.groupEntriesByDate(entries);
         console.log(groupedByDate);
-        
 
         this.barChartData = {
           labels: this.chartLabels,
@@ -177,13 +191,12 @@ export class TimeEntryGraphComponent implements OnInit {
         };
 
         console.log(this.barChartData.datasets[0].data);
-        
 
         this.lineChartData = {
           labels: this.chartLabels,
           datasets: [
             {
-              label: 'Entries',
+              label: 'Projects',
               data: this.chartLabels.map(
                 (date) => groupedByDate[date]?.entryCount || 0
               ),
@@ -196,7 +209,6 @@ export class TimeEntryGraphComponent implements OnInit {
         };
 
         console.log(this.lineChartData.datasets[0].data);
-        
       });
   }
 
@@ -219,10 +231,10 @@ export class TimeEntryGraphComponent implements OnInit {
     return end;
   }
 
-  private generateDateRange(startDate: string): string[] {
+  private generateDateRange(startDate: string, endDate: string): string[] {
     const dateArray: string[] = [];
     let currentDate = new Date(startDate);
-    const lastDate = new Date();
+    const lastDate = new Date(endDate);
 
     while (currentDate <= lastDate) {
       dateArray.push(this.formatDate(currentDate)); // Push formatted date

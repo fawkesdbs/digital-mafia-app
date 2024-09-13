@@ -80,6 +80,10 @@ export class TimeTrackerComponent implements OnInit {
     entry.isEditing = !entry.isEditing;
   }
 
+  applyCustomRange() {
+    this.loadTimeEntries();
+  }
+
   createEntry(): void {
     const entryDate = `${this.date}T${this.time}:00.000+02:00`;
     if (this.newEntry.type === 'log' && !this.isValidTimeEntry(entryDate, 'log')) {
