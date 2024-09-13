@@ -22,6 +22,7 @@ import { importProvidersFrom } from '@angular/core';
 import { AdminApprovalComponent } from './app/features/admin-approval/admin-approval.component';
 import { UserOverviewComponent } from './app/features/user-overview/user-overview.component';
 import { ForgotPasswordComponent } from './app/features/forgot-password/forgot-password.component';
+import { FormsModule } from '@angular/forms';  // Import FormsModule here
 
 const routes: Routes = [
   { path: 'page-not-found', component: PageNotFoundComponent },
@@ -67,7 +68,8 @@ bootstrapApplication(AppComponent, {
       CalendarModule.forRoot({
         provide: DateAdapter,
         useFactory: adapterFactory,
-      })
+      }),
+      FormsModule  // Include FormsModule here
     ),
     provideHttpClient(),
     provideHttpClient(withFetch()),

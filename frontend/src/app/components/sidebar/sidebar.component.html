@@ -30,6 +30,13 @@
       >
     </li>
 
+    <li>
+      <a [routerLink]="['/chatroom']"
+        ><span class="material-symbols-outlined"> chat </span>
+        <span class="text" *ngIf="isSidebarExpanded">Chatroom</span></a
+      >
+    </li>
+
     <!-- Admin-specific options -->
     <ng-container *ngIf="isAdmin">
       <li>
