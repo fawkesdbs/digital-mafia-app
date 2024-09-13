@@ -21,6 +21,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { importProvidersFrom } from '@angular/core';
 import { AdminApprovalComponent } from './app/features/admin-approval/admin-approval.component';
 import { UserOverviewComponent } from './app/features/user-overview/user-overview.component';
+import { ForgotPasswordComponent } from './app/features/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: 'page-not-found', component: PageNotFoundComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
     children: [
       { path: 'register', component: SignUpComponent },
       { path: 'login', component: LoginComponent },
+      { path: 'forgot-password', component: ForgotPasswordComponent },
       { path: '', redirectTo: 'register', pathMatch: 'full' },
     ],
   },
