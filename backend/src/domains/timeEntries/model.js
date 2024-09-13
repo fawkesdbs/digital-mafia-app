@@ -18,6 +18,10 @@ const TimeEntry = sequelize.define(
         key: "id",
       },
     },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     date: {
       type: DataTypes.DATE,
       allowNull: false,

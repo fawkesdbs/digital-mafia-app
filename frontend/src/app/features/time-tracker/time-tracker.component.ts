@@ -8,15 +8,19 @@ import { SidebarService } from '../../services/sidebar.service';
 import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 
+interface TimeEntryWithEditing extends TimeEntry {
+  isEditing?: boolean;
+}
+
 @Component({
   selector: 'app-time-tracker',
   standalone: true,
   imports: [CommonModule, FormsModule, InputComponent],
   templateUrl: './time-tracker.component.html',
-  styleUrl: './time-tracker.component.css',
+  styleUrls: ['./time-tracker.component.css'],
 })
 export class TimeTrackerComponent implements OnInit {
-  timeEntries: any[] = [];
+  timeEntries: TimeEntryWithEditing[] = [];
   token = localStorage.getItem('authToken') || '';
   decodedToken: CustomJwtPayload = jwt_decode.jwtDecode(this.token);
   userId = this.decodedToken.id;
@@ -27,6 +31,7 @@ export class TimeTrackerComponent implements OnInit {
     date: '',
     hours: '0',
     description: '',
+    type: 'log',
   };
   isSidebarExpanded: boolean = false;
   date = '';
@@ -39,11 +44,15 @@ export class TimeTrackerComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTimeEntries();
-
-    // Subscribe to sidebar expansion changes
     this.sidebarService.isSidebarExpanded$.subscribe((expanded) => {
       this.isSidebarExpanded = expanded;
     });
+  }
+
+  private isValidTimeEntry(date: string, type: string): boolean {
+    const entryDate = new Date(date);
+    const currentDate = new Date();
+    return type === 'event' || entryDate <= currentDate;
   }
 
   loadTimeEntries(): void {
@@ -52,14 +61,14 @@ export class TimeTrackerComponent implements OnInit {
       .pipe(
         catchError((error) => {
           console.error('Error loading time entries:', error);
-          return of([]);
+          return of([] as TimeEntryWithEditing[]);
         })
       )
       .subscribe((entries) => {
         this.timeEntries = entries
           .map((entry) => ({
             ...entry,
-            isEditing: false, // Add an `isEditing` flag to each entry
+            isEditing: false,
           }))
           .sort(
             (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -67,12 +76,18 @@ export class TimeTrackerComponent implements OnInit {
       });
   }
 
-  toggleEditEntry(entry: any): void {
-    entry.isEditing = !entry.isEditing; // Toggle edit mode
+  toggleEditEntry(entry: TimeEntryWithEditing): void {
+    entry.isEditing = !entry.isEditing;
   }
 
   createEntry(): void {
-    this.newEntry.date = `${this.date}T${this.time}:00.000+02:00`;
+    const entryDate = `${this.date}T${this.time}:00.000+02:00`;
+    if (this.newEntry.type === 'log' && !this.isValidTimeEntry(entryDate, 'log')) {
+      alert('Cannot create time entry for the future.');
+      return;
+    }
+
+    this.newEntry.date = entryDate;
     this.timeEntryService
       .createTimeEntry(this.newEntry)
       .pipe(
@@ -81,7 +96,7 @@ export class TimeTrackerComponent implements OnInit {
           const errorMessage =
             error.error || 'Failed to create log entry. Please try again.';
           alert(errorMessage);
-          return of(null); // Return null or some default value
+          return of(null);
         })
       )
       .subscribe(() => {
@@ -89,22 +104,28 @@ export class TimeTrackerComponent implements OnInit {
         this.newEntry = {
           userId: this.userId,
           date: '',
-          hours: '',
+          hours: '0',
           description: '',
+          type: 'log',
         };
       });
   }
 
-  updateEntry(entry: any): void {
+  updateEntry(entry: TimeEntryWithEditing): void {
+    if (entry.type === 'log' && !this.isValidTimeEntry(entry.date, 'log')) {
+      alert('Cannot update time entry for the future.');
+      return;
+    }
+
     this.timeEntryService
-      .updateTimeEntry(entry.id, entry)
+      .updateTimeEntry(entry.id as string, entry)
       .pipe(
         catchError((error) => {
           console.error('Error updating entry:', error);
           const errorMessage =
             error.error || 'Failed to update log entry. Please try again.';
           alert(errorMessage);
-          return of(null); // Return null if there's an error
+          return of(null);
         })
       )
       .subscribe(() => {
@@ -113,16 +134,21 @@ export class TimeTrackerComponent implements OnInit {
       });
   }
 
-  deleteEntry(entry: any): void {
+  deleteEntry(entry: TimeEntryWithEditing): void {
+    if (entry.type === 'log' && !this.isValidTimeEntry(entry.date, 'log')) {
+      alert('Cannot delete time entry for the future.');
+      return;
+    }
+
     this.timeEntryService
-      .deleteTimeEntry(entry.id)
+      .deleteTimeEntry(entry.id as string)
       .pipe(
         catchError((error) => {
           console.error('Error deleting entry:', error);
           const errorMessage =
             error.error || 'Failed to delete log entry. Please try again.';
           alert(errorMessage);
-          return of(null); // Return null if there's an error
+          return of(null);
         })
       )
       .subscribe(() => {

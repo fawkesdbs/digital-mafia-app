@@ -61,6 +61,7 @@ const createTablesAndInsertDefaultUser = async (connection, dbName) => {
       `CREATE TABLE IF NOT EXISTS time_entries (
       id INT NOT NULL AUTO_INCREMENT,
       user_id INT NOT NULL,
+      type VARCHAR(255) DEFAULT NULL,
       date DATETIME NOT NULL,
       hours FLOAT NOT NULL,
       description VARCHAR(255) DEFAULT NULL,

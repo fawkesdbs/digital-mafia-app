@@ -8,6 +8,7 @@ export interface TimeEntry {
   date: string;
   hours: string;
   description: string;
+  type: 'log' | 'event'; // Restrict the type to 'log' or 'event'
 }
 
 @Injectable({
@@ -15,14 +16,22 @@ export interface TimeEntry {
 })
 export class TimeEntryService {
   private apiUrl = 'http://localhost:3000/api/time-entries';
+
   constructor(private http: HttpClient) {}
 
+  // Create a new time entry (log or event)
   createTimeEntry(timeEntry: TimeEntry): Observable<TimeEntry> {
+    // Check if it's a 'log' and if the date is in the future
+    if (timeEntry.type === 'log' && new Date(timeEntry.date) > new Date()) {
+      throw new Error('Cannot create a time log with a future date.');
+    }
+
     return this.http.post<TimeEntry>(this.apiUrl, timeEntry, {
       headers: this.getAuthHeaders(),
     });
   }
 
+  // Get all time entries for a user within a date range
   getTimeEntries(
     userId: string,
     startDate: string,
@@ -36,23 +45,31 @@ export class TimeEntryService {
     );
   }
 
+  // Update an existing time entry
   updateTimeEntry(id: string, timeEntry: TimeEntry): Observable<TimeEntry> {
+    // Prevent updating a 'log' to a future date
+    if (timeEntry.type === 'log' && new Date(timeEntry.date) > new Date()) {
+      throw new Error('Cannot update a time log to a future date.');
+    }
+
     return this.http.put<TimeEntry>(`${this.apiUrl}/${id}`, timeEntry, {
       headers: this.getAuthHeaders(),
     });
   }
 
+  // Delete a time entry
   deleteTimeEntry(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, {
       headers: this.getAuthHeaders(),
     });
   }
 
-  private getAuthHeaders() {
+  // Private method to get authorization headers
+  private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('authToken');
     return new HttpHeaders({
       Authorization: `Bearer ${token}`,
-      ContentType: 'application/json',
+      'Content-Type': 'application/json',
     });
   }
 }
