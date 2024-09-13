@@ -1,13 +1,19 @@
 const TimeEntry = require("./model");
 const { Op } = require("sequelize");
-const moment = require("moment");
-const { isValidTimeEntry } = require("../../util/validTimeEntry");
 
+// Utility function to validate if the time entry date is not in the future
+const isValidTimeEntry = (date) => {
+  const entryDate = new Date(date);
+  const currentDate = new Date();
+  return entryDate <= currentDate;
+};
+
+// Create or update a time entry
 const createTimeEntry = async (req, res) => {
-  const { date, hours, description } = req.body;
+  const { type, date, hours, description } = req.body;
   const userId = req.user.id; // Assuming user ID is available from authentication
 
-  if (!isValidTimeEntry(date)) {
+  if (type === 'log' && !isValidTimeEntry(date)) {
     return res.status(400).json("Cannot log time for the future.");
   }
 
@@ -17,6 +23,11 @@ const createTimeEntry = async (req, res) => {
     });
 
     if (timeEntry) {
+      // Validate before updating
+      if (type === 'log' && !isValidTimeEntry(date)) {
+        return res.status(400).json("Cannot update time entry for the future.");
+      }
+
       // Update existing entry
       timeEntry.hours = hours;
       timeEntry.description = description;
@@ -28,15 +39,18 @@ const createTimeEntry = async (req, res) => {
         date,
         hours,
         description,
+        type,
       });
     }
 
     return res.status(200).json(timeEntry);
   } catch (error) {
+    console.error("Error creating time entry:", error);
     return res.status(500).json("Error processing your request.");
   }
 };
 
+// Get time entries within a date range
 const getTimeEntries = async (req, res) => {
   const { userId, startDate, endDate } = req.query;
 
@@ -52,13 +66,15 @@ const getTimeEntries = async (req, res) => {
 
     return res.status(200).json(timeEntries);
   } catch (error) {
+    console.error("Error retrieving time entries:", error);
     return res.status(500).json("Error retrieving time entries.");
   }
 };
 
+// Update an existing time entry
 const updateTimeEntry = async (req, res) => {
   const { id } = req.params;
-  const { hours, description } = req.body;
+  const { hours, description, type } = req.body;
 
   try {
     const timeEntry = await TimeEntry.findByPk(id);
@@ -67,7 +83,8 @@ const updateTimeEntry = async (req, res) => {
       return res.status(404).json("Time entry not found.");
     }
 
-    if (!isValidTimeEntry(timeEntry.date)) {
+    // Validate before updating
+    if (type === 'log' && !isValidTimeEntry(timeEntry.date)) {
       return res.status(400).json("Cannot update time entry for the future.");
     }
 
@@ -75,12 +92,14 @@ const updateTimeEntry = async (req, res) => {
     timeEntry.description = description;
     await timeEntry.save();
 
-    res.json(timeEntry);
+    return res.status(200).json(timeEntry);
   } catch (error) {
-    res.status(500).json("Error updating time entry.");
+    console.error("Error updating time entry:", error);
+    return res.status(500).json("Error updating time entry.");
   }
 };
 
+// Delete a time entry
 const deleteTimeEntry = async (req, res) => {
   const { id } = req.params;
 
@@ -91,14 +110,16 @@ const deleteTimeEntry = async (req, res) => {
       return res.status(404).json("Time entry not found.");
     }
 
-    if (!isValidTimeEntry(timeEntry.date)) {
+    // Validate before deleting
+    if (timeEntry.type === 'log' && !isValidTimeEntry(timeEntry.date)) {
       return res.status(400).json("Cannot delete time entry for the future.");
     }
 
     await timeEntry.destroy();
-    res.jsonStatus(204);
+    return res.status(204).send(); // Use send() to end the response
   } catch (error) {
-    res.status(500).json("Error deleting time entry.");
+    console.error("Error deleting time entry:", error);
+    return res.status(500).json("Error deleting time entry.");
   }
 };
 

@@ -173,6 +173,8 @@ export class TimeEntryGraphComponent implements OnInit {
       .getTimeEntries(this.userId, this.startDate, this.endDate)
       .subscribe((entries) => {
         const groupedByDate = this.groupEntriesByDate(entries);
+        console.log(groupedByDate);
+        
 
         this.barChartData = {
           labels: this.chartLabels,
@@ -189,6 +191,9 @@ export class TimeEntryGraphComponent implements OnInit {
           ],
         };
 
+        console.log(this.barChartData.datasets[0].data);
+        
+
         this.lineChartData = {
           labels: this.chartLabels,
           datasets: [
@@ -204,6 +209,9 @@ export class TimeEntryGraphComponent implements OnInit {
             },
           ],
         };
+
+        console.log(this.lineChartData.datasets[0].data);
+        
       });
   }
 
