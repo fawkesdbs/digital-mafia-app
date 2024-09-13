@@ -22,9 +22,9 @@ export class TimeEntryGraphComponent implements OnInit {
   decodedToken: CustomJwtPayload = jwt_decode.jwtDecode(this.token);
   userId = this.decodedToken.id;
 
-  startDate = '2024-09-01';
-  endDate = new Date();
-  endDateStr = this.formatDate(this.endDate);
+  now = new Date();
+  startDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-01`;
+  endDate = this.formatDate(this.now);
 
   // Define the labels (x-axis labels for both charts)
   chartLabels: string[] = [];
@@ -110,10 +110,52 @@ export class TimeEntryGraphComponent implements OnInit {
   constructor(private timeEntryService: TimeEntryService) {}
 
   ngOnInit(): void {
+    this.updateCharts();
+  }
+
+  setTimePeriod(period: string): void {
+    const today = new Date();
+    switch (period) {
+      case 'today':
+        this.startDate = this.endDate = this.formatDate(today);
+        break;
+      case 'thisWeek':
+        this.startDate = this.formatDate(this.getStartOfWeek(today));
+        this.endDate = this.formatDate(this.getEndOfWeek(today));
+        break;
+      case 'thisMonth':
+        this.startDate = this.formatDate(
+          new Date(today.getFullYear(), today.getMonth(), 1)
+        );
+        this.endDate = this.formatDate(
+          new Date(today.getFullYear(), today.getMonth() + 1, 0)
+        );
+        break;
+      case 'lastMonth':
+        const lastMonth = new Date(
+          today.getFullYear(),
+          today.getMonth() - 1,
+          1
+        );
+        this.startDate = this.formatDate(lastMonth);
+        this.endDate = this.formatDate(
+          new Date(today.getFullYear(), today.getMonth(), 0)
+        );
+        break;
+      case 'custom':
+        // Handle custom date range logic here
+        break;
+      default:
+        break;
+    }
+    this.updateCharts();
+  }
+
+  private updateCharts(): void {
     this.chartLabels = this.generateDateRange(this.startDate);
 
     this.timeEntryService
-      .getTimeEntries(this.userId, this.startDate, this.endDateStr)
+      .getTimeEntries(this.userId, this.startDate, this.endDate)
       .subscribe((entries) => {
         const groupedByDate = this.groupEntriesByDate(entries);
         console.log(groupedByDate);
@@ -163,6 +205,18 @@ export class TimeEntryGraphComponent implements OnInit {
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Add leading zero
     const day = date.getDate().toString().padStart(2, '0'); // Add leading zero
     return `${year}-${month}-${day}`;
+  }
+
+  private getStartOfWeek(date: Date): Date {
+    const start = new Date(date);
+    start.setDate(start.getDate() - start.getDay());
+    return start;
+  }
+
+  private getEndOfWeek(date: Date): Date {
+    const end = new Date(date);
+    end.setDate(end.getDate() + (6 - end.getDay()));
+    return end;
   }
 
   private generateDateRange(startDate: string): string[] {

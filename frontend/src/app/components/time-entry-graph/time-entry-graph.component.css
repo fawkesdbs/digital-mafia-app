@@ -1,5 +1,15 @@
 .charts-container {
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5em;
+}
+.chart-time-periods {
+  flex: 1 1 100%;
+}
+
+.chart-graphs {
+  display: flex;
   width: 100%;
   gap: 0.5em;
 }

@@ -1,21 +1,41 @@
 <div class="charts-container">
-  <div class="chart-graph">
-    <canvas
-      baseChart
-      [data]="barChartData"
-      [options]="chartOptionsBar"
-      type="bar"
-    >
-    </canvas>
+  <div class="chart-time-periods">
+    <button (click)="setTimePeriod('today')" class="secondary-btn">
+      Today
+    </button>
+    <button (click)="setTimePeriod('thisWeek')" class="secondary-btn">
+      This Week
+    </button>
+    <button (click)="setTimePeriod('thisMonth')" class="secondary-btn">
+      This Month
+    </button>
+    <button (click)="setTimePeriod('lastMonth')" class="secondary-btn">
+      Last Month
+    </button>
+    <button (click)="setTimePeriod('custom')" class="secondary-btn">
+      Custom Range
+    </button>
   </div>
 
-  <div class="chart-graph">
-    <canvas
-      baseChart
-      [data]="lineChartData"
-      [options]="chartOptionsLine"
-      type="line"
-    >
-    </canvas>
+  <div class="chart-graphs">
+    <div class="chart-graph">
+      <canvas
+        baseChart
+        [data]="barChartData"
+        [options]="chartOptionsBar"
+        type="bar"
+      >
+      </canvas>
+    </div>
+
+    <div class="chart-graph">
+      <canvas
+        baseChart
+        [data]="lineChartData"
+        [options]="chartOptionsLine"
+        type="line"
+      >
+      </canvas>
+    </div>
   </div>
 </div>

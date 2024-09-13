@@ -68,6 +68,14 @@ const createTablesAndInsertDefaultUser = async (connection, dbName) => {
       PRIMARY KEY (id),
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )`,
+      `CREATE TABLE IF NOT EXISTS OTP (
+      id INT NOT NULL AUTO_INCREMENT,
+      email VARCHAR(255) NOT NULL UNIQUE,
+      otp VARCHAR(255) NOT NULL,
+      createdAt DATETIME NOT NULL,
+      expiresAt DATETIME NOT NULL,
+      PRIMARY KEY (id)
+      );`,
     ];
 
     for (const query of tableCreationQueries) {

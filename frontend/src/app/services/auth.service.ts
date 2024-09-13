@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private fpApiUrl = 'http://localhost:3000/api/forgot_password';
+  private otpApiUrl = 'http://localhost:3000/api/otp';
   private readonly adminRole = 'admin';
   private loginTime: Date | null = null;
   private logoutTime: Date | null = null;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   isAdmin(): boolean {
     const role = localStorage.getItem('userRole');
@@ -23,6 +27,25 @@ export class AuthService {
   login() {
     this.loginTime = new Date();
     console.log('User logged in at:', this.loginTime);
+  }
+
+  sendPasswordResetEmail(email: string): Observable<any> {
+    const body = { email };
+    return this.http.post(`${this.fpApiUrl}/`, body);
+  }
+
+  resetPassword(
+    email: string,
+    otp: string,
+    newPassword: string
+  ): Observable<any> {
+    const body = { email, otp, newPassword };
+    return this.http.post(`${this.fpApiUrl}/reset`, body);
+  }
+
+  verifyOTP(email: string, otp: string): Observable<any> {
+    const body = { email, otp };
+    return this.http.post(`${this.otpApiUrl}/verify`, body);
   }
 
   // Handle user logout

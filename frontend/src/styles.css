@@ -71,6 +71,11 @@ select {
   background-color: #5d8fe5;
 }
 
+.primary-btn:disabled {
+  background-color: #b0b0b0;
+  color: #2f2f2f;
+}
+
 .secondary-btn {
   color: black;
   background-color: #d5d7dc;
