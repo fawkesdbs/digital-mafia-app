@@ -15,6 +15,21 @@
     <button (click)="setTimePeriod('custom')" class="secondary-btn">
       Custom Range
     </button>
+    <div *ngIf="showCustomRange" class="custom-range-controls">
+      <app-input
+        type="date"
+        label="Start Date"
+        [(value)]="startDate"
+        [required]="true"
+      ></app-input>
+      <app-input
+        type="date"
+        label="End Date"
+        [(value)]="endDate"
+        [required]="true"
+      ></app-input>
+      <button (click)="applyCustomRange()" class="primary-btn">Apply</button>
+    </div>
   </div>
 
   <div class="chart-graphs">

@@ -3,6 +3,22 @@
 >
   <h2>Time Log</h2>
 
+  <div class="custom-range-controls">
+    <app-input
+      type="date"
+      label="Start Date"
+      [(value)]="startDate"
+      [required]="true"
+    ></app-input>
+    <app-input
+      type="date"
+      label="End Date"
+      [(value)]="endDate"
+      [required]="true"
+    ></app-input>
+    <button (click)="applyCustomRange()" class="primary-btn">Apply</button>
+  </div>
+
   <div class="form-container">
     <p>New Log</p>
     <form (ngSubmit)="createEntry()">

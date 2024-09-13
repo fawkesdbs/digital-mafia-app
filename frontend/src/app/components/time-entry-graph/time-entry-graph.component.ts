@@ -1,19 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { TimeEntryService } from '../../services/time-entry.service';
-import {
-  ChartConfiguration,
-  ChartData,
-  ChartDataset,
-  ChartOptions,
-} from 'chart.js';
+import { ChartData, ChartOptions } from 'chart.js';
 import { CustomJwtPayload } from '../../interfaces/jwt.interfaces';
 import * as jwt_decode from 'jwt-decode';
+import { InputComponent } from '../input/input.component';
 
 @Component({
   selector: 'app-time-entry-graph',
   standalone: true,
-  imports: [BaseChartDirective],
+  imports: [CommonModule, BaseChartDirective, InputComponent],
   templateUrl: './time-entry-graph.component.html',
   styleUrl: './time-entry-graph.component.css',
 })
@@ -25,6 +22,7 @@ export class TimeEntryGraphComponent implements OnInit {
   now = new Date();
   startDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-01`;
   endDate = this.formatDate(this.now);
+  showCustomRange = false;
 
   // Define the labels (x-axis labels for both charts)
   chartLabels: string[] = [];
@@ -117,13 +115,16 @@ export class TimeEntryGraphComponent implements OnInit {
     const today = new Date();
     switch (period) {
       case 'today':
+        this.showCustomRange = false;
         this.startDate = this.endDate = this.formatDate(today);
         break;
       case 'thisWeek':
+        this.showCustomRange = false;
         this.startDate = this.formatDate(this.getStartOfWeek(today));
         this.endDate = this.formatDate(this.getEndOfWeek(today));
         break;
       case 'thisMonth':
+        this.showCustomRange = false;
         this.startDate = this.formatDate(
           new Date(today.getFullYear(), today.getMonth(), 1)
         );
@@ -132,6 +133,7 @@ export class TimeEntryGraphComponent implements OnInit {
         );
         break;
       case 'lastMonth':
+        this.showCustomRange = false;
         const lastMonth = new Date(
           today.getFullYear(),
           today.getMonth() - 1,
@@ -143,11 +145,16 @@ export class TimeEntryGraphComponent implements OnInit {
         );
         break;
       case 'custom':
-        // Handle custom date range logic here
+        this.showCustomRange = !this.showCustomRange;
         break;
       default:
+        this.showCustomRange = false;
         break;
     }
+    this.updateCharts();
+  }
+
+  applyCustomRange() {
     this.updateCharts();
   }
 

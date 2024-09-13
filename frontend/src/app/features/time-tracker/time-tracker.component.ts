@@ -71,6 +71,10 @@ export class TimeTrackerComponent implements OnInit {
     entry.isEditing = !entry.isEditing; // Toggle edit mode
   }
 
+  applyCustomRange() {
+    this.loadTimeEntries();
+  }
+
   createEntry(): void {
     this.newEntry.date = `${this.date}T${this.time}:00.000+02:00`;
     this.timeEntryService

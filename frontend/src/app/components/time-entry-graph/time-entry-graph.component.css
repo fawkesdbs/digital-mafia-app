@@ -6,6 +6,13 @@
 }
 .chart-time-periods {
   flex: 1 1 100%;
+  display: flex;
+  gap: 0.5em;
+}
+
+.custom-range-controls {
+  display: flex;
+  gap: 0.5em;
 }
 
 .chart-graphs {

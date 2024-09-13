@@ -7,6 +7,11 @@
   box-sizing: border-box;
 }
 
+.custom-range-controls {
+  display: flex;
+  gap: 0.5em;
+}
+
 .form-container {
   margin: auto;
   display: flex;
