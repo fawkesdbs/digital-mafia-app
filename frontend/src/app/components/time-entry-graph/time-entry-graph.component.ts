@@ -167,14 +167,13 @@ export class TimeEntryGraphComponent implements OnInit {
   }
 
   private updateCharts(): void {
-    this.chartLabels = this.generateDateRange(this.startDate);
+    this.chartLabels = this.generateDateRange(this.startDate, this.endDate);
 
     this.timeEntryService
       .getTimeEntries(this.userId, this.startDate, this.endDate)
       .subscribe((entries) => {
         const groupedByDate = this.groupEntriesByDate(entries);
         console.log(groupedByDate);
-        
 
         this.barChartData = {
           labels: this.chartLabels,
@@ -192,7 +191,6 @@ export class TimeEntryGraphComponent implements OnInit {
         };
 
         console.log(this.barChartData.datasets[0].data);
-        
 
         this.lineChartData = {
           labels: this.chartLabels,
@@ -211,7 +209,6 @@ export class TimeEntryGraphComponent implements OnInit {
         };
 
         console.log(this.lineChartData.datasets[0].data);
-        
       });
   }
 
@@ -234,10 +231,10 @@ export class TimeEntryGraphComponent implements OnInit {
     return end;
   }
 
-  private generateDateRange(startDate: string): string[] {
+  private generateDateRange(startDate: string, endDate: string): string[] {
     const dateArray: string[] = [];
     let currentDate = new Date(startDate);
-    const lastDate = new Date();
+    const lastDate = new Date(endDate);
 
     while (currentDate <= lastDate) {
       dateArray.push(this.formatDate(currentDate)); // Push formatted date
