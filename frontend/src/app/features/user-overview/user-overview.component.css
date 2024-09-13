@@ -2,7 +2,19 @@
   width: 100%;
   transition: left 0.3s, width 0.3s;
   box-sizing: border-box;
-  background: linear-gradient(135deg, #1e3470, #1a3fa3, #90a0e0);
+}
+
+.user-overview-refresh {
+  position: relative;
+  height: 3.5em;
+}
+
+.user-overview-refresh button {
+  position: absolute;
+  right: 0.5em;
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
 }
 
 table {

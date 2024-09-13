@@ -1,3 +1,39 @@
 <div class="calender-container">
-  <app-calendar-widget></app-calendar-widget>
+  <app-calendar-widget
+    [view]="view"
+    [viewDate]="viewDate"
+    [events]="events"
+    (dayClicked)="dayClicked($event)"
+    (viewChanged)="onViewChange($event)"
+  ></app-calendar-widget>
+
+  <div class="form-container">
+    <p>New Event</p>
+    <form (ngSubmit)="createEntry()">
+      <app-input
+        type="date"
+        label="Date"
+        [(value)]="date"
+        [required]="true"
+      ></app-input>
+      <app-input
+        type="time"
+        label="Time"
+        [(value)]="time"
+        [required]="true"
+      ></app-input>
+      <app-input
+        type="number"
+        label="Hours"
+        [(value)]="newEntry.hours"
+        [required]="true"
+      ></app-input>
+      <app-input
+        label="Description"
+        [(value)]="newEntry.description"
+        [required]="true"
+      ></app-input>
+      <button type="submit" class="primary-btn">Add Event</button>
+    </form>
+  </div>
 </div>

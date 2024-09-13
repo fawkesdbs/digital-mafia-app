@@ -1,0 +1,29 @@
+.calendar-controls {
+  padding: 0.5em;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 0.125em solid #797e8d;
+  border-bottom: none;
+  border-radius: 0.5em 0.5em 0 0;
+}
+
+.calendar-views {
+  position: absolute;
+  display: flex;
+  gap: 0.5em;
+  right: 0.5em;
+}
+
+.calendar-navigation {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.primary-btn,
+.secondary-btn {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+}

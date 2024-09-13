@@ -1,147 +1,110 @@
-const User = require("./model");
-const jwt = require("jsonwebtoken");
-const { hashData, verifyHashedData } = require("../../util/hashData");
-const { TOKEN_KEY, TOKEN_EXPIRY } = process.env;
+const TimeEntry = require("./model");
+const { Op } = require("sequelize");
+const moment = require("moment");
+const { isValidTimeEntry } = require("../../util/validTimeEntry");
 
-const checkUser = async (req, res) => {
-  const { email } = req.body;
+const createTimeEntry = async (req, res) => {
+  const { date, hours, description } = req.body;
+  const userId = req.user.id; // Assuming user ID is available from authentication
 
-  if (!email) {
-    return res.status(400).send("Email is required");
+  if (!isValidTimeEntry(date)) {
+    return res.status(400).json("Cannot log time for the future.");
   }
 
   try {
-    const user = await User.findOne({ where: { email } });
-    res.json(!!user);
-  } catch (error) {
-    console.error("Error checking user existence:", error.message);
-    res.status(500).send("Error checking user existence");
-  }
-};
-
-const registerUser = async (req, res) => {
-  const { name, surname, email, phoneNumber, birthDate, password, role } =
-    req.body;
-
-  // Validate required fields
-  if (
-    !name ||
-    !surname ||
-    !email ||
-    !phoneNumber ||
-    !birthDate ||
-    !password ||
-    !role
-  ) {
-    return res.status(400).send("All fields are required");
-  }
-
-  try {
-    // Check if the email already exists
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      return res.status(400).send("Email already exists");
-    }
-
-    // Create new user
-    const hashedPassword = await hashData(password);
-    const newUser = await User.create({
-      name,
-      surname,
-      email,
-      phoneNumber,
-      birthDate,
-      password: hashedPassword,
-      role,
+    let timeEntry = await TimeEntry.findOne({
+      where: { user_id: userId, date },
     });
-    console.log(newUser);
 
-    res.status(201).send("User registered successfully");
-  } catch (error) {
-    console.error("Error registering user:", error.message);
-    res.status(500).send("Error registering user");
-  }
-};
-
-const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).send("Email and password are required");
-  }
-
-  try {
-    const user = await User.findOne({ where: { email } });
-    if (user) {
-      const storedPassword = user.password;
-      const match = await verifyHashedData(password, storedPassword);
-      console.log(match);
-
-      if (match) {
-        const token = jwt.sign({ id: user.id, role: user.role }, TOKEN_KEY, {
-          expiresIn: TOKEN_EXPIRY,
-        });
-        res.status(200).json({ success: true, token });
-      } else {
-        res.status(401).json({ success: false, message: "Incorrect password" });
-      }
+    if (timeEntry) {
+      // Update existing entry
+      timeEntry.hours = hours;
+      timeEntry.description = description;
+      await timeEntry.save();
     } else {
-      res.status(401).json({ success: false, message: "Incorrect email" });
+      // Create new entry
+      timeEntry = await TimeEntry.create({
+        user_id: userId,
+        date,
+        hours,
+        description,
+      });
     }
+
+    return res.status(200).json(timeEntry);
   } catch (error) {
-    console.error("Error during login:", error.message);
-    res.status(500).send("Error during login");
+    return res.status(500).json("Error processing your request.");
   }
 };
 
-const getUserRole = async (req, res) => {
-  const role = req.user.role; // Extracted role from token
-  res.status(200).json({ role });
-};
+const getTimeEntries = async (req, res) => {
+  const { userId, startDate, endDate } = req.query;
 
-const getPendingAdmins = async (req, res) => {
   try {
-    const pendingAdmins = await User.findAll({
-      where: { role: "pending-admin" },
+    const timeEntries = await TimeEntry.findAll({
+      where: {
+        user_id: userId,
+        date: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
     });
-    res.json(pendingAdmins);
+
+    return res.status(200).json(timeEntries);
   } catch (error) {
-    console.error("Error fetching pending admins:", error.message);
-    res.status(500).send("Error fetching pending admins");
+    return res.status(500).json("Error retrieving time entries.");
   }
 };
 
-const approveAdmin = async (req, res) => {
-  const { adminId } = req.params;
+const updateTimeEntry = async (req, res) => {
+  const { id } = req.params;
+  const { hours, description } = req.body;
 
   try {
-    // Move user from PendingAdmins to Users or perform any approval logic here
-    await User.destroy({ where: { id: adminId, role: "pending-admin" } });
-    res.status(200).send("Admin approved successfully");
+    const timeEntry = await TimeEntry.findByPk(id);
+
+    if (!timeEntry) {
+      return res.status(404).json("Time entry not found.");
+    }
+
+    if (!isValidTimeEntry(timeEntry.date)) {
+      return res.status(400).json("Cannot update time entry for the future.");
+    }
+
+    timeEntry.hours = hours;
+    timeEntry.description = description;
+    await timeEntry.save();
+
+    res.json(timeEntry);
   } catch (error) {
-    console.error("Error approving admin:", error.message);
-    res.status(500).send("Error approving admin");
+    res.status(500).json("Error updating time entry.");
   }
 };
 
-const rejectAdmin = async (req, res) => {
-  const { adminId } = req.params;
+const deleteTimeEntry = async (req, res) => {
+  const { id } = req.params;
 
   try {
-    await User.destroy({ where: { id: adminId, role: "pending-admin" } });
-    res.status(200).send("Admin rejected successfully");
+    const timeEntry = await TimeEntry.findByPk(id);
+
+    if (!timeEntry) {
+      return res.status(404).json("Time entry not found.");
+    }
+
+    if (!isValidTimeEntry(timeEntry.date)) {
+      return res.status(400).json("Cannot delete time entry for the future.");
+    }
+
+    await timeEntry.destroy();
+    res.jsonStatus(204);
   } catch (error) {
-    console.error("Error rejecting admin:", error.message);
-    res.status(500).send("Error rejecting admin");
+    res.status(500).json("Error deleting time entry.");
   }
 };
 
 module.exports = {
-  checkUser,
-  registerUser,
-  loginUser,
-  getUserRole,
-  getPendingAdmins,
-  approveAdmin,
-  rejectAdmin,
+  createTimeEntry,
+  getTimeEntries,
+  updateTimeEntry,
+  deleteTimeEntry,
 };

@@ -28,7 +28,7 @@ export class AdminApprovalComponent implements OnInit {
     });
   }
 
-  private loadPendingAdmins(): void {
+  loadPendingAdmins(): void {
     this.userService.getPendingAdmins().subscribe(
       (data) => {
         console.log('Pending admins data:', data); // Debug log

@@ -1,4 +1,3 @@
-const { where } = require("sequelize");
 const PendingAdmin = require("./model");
 const User = require("../user/model");
 const { hashData } = require("./../../util/hashData");

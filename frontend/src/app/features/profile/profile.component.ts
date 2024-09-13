@@ -33,7 +33,7 @@ interface UpdatedUserProfile extends UserProfile {
 export class ProfileComponent implements OnInit {
   token = localStorage.getItem('authToken') || '';
   decodedToken: CustomJwtPayload = jwt_decode.jwtDecode(this.token);
-  currentUserId = this.decodedToken.id;
+  currentUserId: string = this.decodedToken.id;
   currentUserRole = this.decodedToken.role;
 
   isCurrentUser: boolean;
@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private userService: UserService, private route: ActivatedRoute) {
     this.userId = this.route.snapshot.paramMap.get('id')!;
-    this.isCurrentUser = this.userId === this.currentUserId;
+    this.isCurrentUser = this.userId === `${this.currentUserId}`;
   }
 
   ngOnInit(): void {

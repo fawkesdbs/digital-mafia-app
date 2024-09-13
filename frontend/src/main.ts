@@ -40,7 +40,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'profile/:id', component: ProfileComponent },
       { path: 'calendar', component: CalendarComponent },
-      { path: 'time-tracker', component: TimeTrackerComponent },
+      { path: 'time-log', component: TimeTrackerComponent },
       {
         path: 'admin-approval',
         component: AdminApprovalComponent,

@@ -33,18 +33,14 @@ export class UserService {
   }
 
   getUserRole(userId: string) {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<any>(`${this.userApiUrl}/user-role/${userId}`, {
-      headers,
+      headers: this.getAuthHeaders(),
     });
   }
 
   getUserProfile(userId: string) {
-    const token = localStorage.getItem('authToken'); // Fetch the token from localStorage
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); // Add token to headers
     return this.http.get<any>(`${this.userApiUrl}/profile/${userId}`, {
-      headers,
+      headers: this.getAuthHeaders(),
     }); // Make request with headers
   }
 

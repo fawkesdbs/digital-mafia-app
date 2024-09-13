@@ -1,5 +1,40 @@
-<mwl-calendar-month-view
-  [viewDate]="viewDate"
-  [events]="events"
-  (dayClicked)="dayClicked($event.day)"
-></mwl-calendar-month-view>
+<div class="calendar-widget-container">
+  <div class="calendar-controls">
+    <div class="calendar-navigation">
+      <button
+        class="secondary-btn"
+        (click)="isMonthView() ? changeMonth(-1) : changeDay(-1)"
+      >
+        <span class="material-symbols-outlined"> arrow_back </span>
+      </button>
+      <span>{{ formattedDate }}</span>
+      <button
+        class="secondary-btn"
+        (click)="isMonthView() ? changeMonth(1) : changeDay(1)"
+      >
+        <span class="material-symbols-outlined"> arrow_forward </span>
+      </button>
+    </div>
+    <div class="calendar-views">
+      <button (click)="onViewChange(monthView)" class="primary-btn">
+        <span class="material-symbols-outlined"> calendar_view_month </span>
+      </button>
+      <button (click)="onViewChange(dayView)" class="primary-btn">
+        <span class="material-symbols-outlined"> calendar_view_day </span>
+      </button>
+    </div>
+  </div>
+
+  <mwl-calendar-month-view
+    *ngIf="isMonthView()"
+    [viewDate]="viewDate"
+    [events]="events"
+    (dayClicked)="onDayClick($event.day)"
+  ></mwl-calendar-month-view>
+
+  <mwl-calendar-day-view
+    *ngIf="isDayView()"
+    [viewDate]="viewDate"
+    [events]="events"
+  ></mwl-calendar-day-view>
+</div>

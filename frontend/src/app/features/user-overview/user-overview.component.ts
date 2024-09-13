@@ -31,7 +31,7 @@ export class UserOverviewComponent implements OnInit {
     });
   }
 
-  private loadUsers(): void {
+  loadUsers(): void {
     this.userService.getUsers().subscribe(
       (data) => {
         console.log('Users data:', data); // Debug log

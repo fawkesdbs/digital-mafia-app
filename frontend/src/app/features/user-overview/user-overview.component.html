@@ -1,6 +1,11 @@
 <div
   [ngClass]="{ 'user-overview-container': true, expanded: isSidebarExpanded }"
 >
+  <div class="user-overview-refresh">
+    <button (click)="loadUsers()" class="secondary-btn">
+      <span class="material-symbols-outlined"> refresh </span>
+    </button>
+  </div>
   <table class="user-overview-table">
     <thead>
       <tr>

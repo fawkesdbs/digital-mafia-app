@@ -1,1 +1,86 @@
-<p>time-tracker works!</p>
+<div
+  [ngClass]="{ 'time-tracker-container': true, expanded: isSidebarExpanded }"
+>
+  <h2>Time Log</h2>
+
+  <div class="form-container">
+    <p>New Log</p>
+    <form (ngSubmit)="createEntry()">
+      <app-input
+        type="date"
+        label="Date"
+        [(value)]="date"
+        [required]="true"
+      ></app-input>
+      <app-input
+        type="time"
+        label="Time"
+        [(value)]="time"
+        [required]="true"
+      ></app-input>
+      <app-input
+        type="number"
+        label="Hours"
+        [(value)]="newEntry.hours"
+        [required]="true"
+      ></app-input>
+      <app-input
+        label="Description"
+        [(value)]="newEntry.description"
+        [required]="true"
+      ></app-input>
+      <button type="submit" class="primary-btn">Log Hours</button>
+    </form>
+  </div>
+
+  <table class="time-tracker-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Hours</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entry of timeEntries">
+        <!-- Show input fields if in edit mode, otherwise display static text -->
+        <td>
+          <input *ngIf="entry.isEditing" [(ngModel)]="entry.date" type="date" />
+          <span *ngIf="!entry.isEditing">{{ entry.date | date }}</span>
+        </td>
+        <td>
+          <input
+            *ngIf="entry.isEditing"
+            [(ngModel)]="entry.hours"
+            type="number"
+          />
+          <span *ngIf="!entry.isEditing">{{ entry.hours }}</span>
+        </td>
+        <td>
+          <input *ngIf="entry.isEditing" [(ngModel)]="entry.description" />
+          <span *ngIf="!entry.isEditing">{{ entry.description }}</span>
+        </td>
+        <td>
+          <button
+            *ngIf="entry.isEditing"
+            (click)="updateEntry(entry)"
+            class="secondary-btn"
+          >
+            Update
+          </button>
+          <button
+            *ngIf="!entry.isEditing"
+            (click)="toggleEditEntry(entry)"
+            class="secondary-btn"
+          >
+            Edit
+          </button>
+          <button (click)="deleteEntry(entry)" class="secondary-btn">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

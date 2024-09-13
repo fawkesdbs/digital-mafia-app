@@ -1,6 +1,7 @@
 const User = require("./model");
 const jwt = require("jsonwebtoken");
 const { hashData, verifyHashedData } = require("../../util/hashData");
+const createToken = require("../../util/createToken");
 const { TOKEN_KEY, TOKEN_EXPIRY } = process.env;
 
 const checkUser = async (req, res) => {
@@ -76,9 +77,11 @@ const loginUser = async (req, res) => {
       const storedPassword = user.password;
       const match = await verifyHashedData(password, storedPassword);
       if (match) {
-        const token = jwt.sign({ id: user.id, role: user.role }, TOKEN_KEY, {
-          expiresIn: TOKEN_EXPIRY,
-        });
+        const token = await createToken(
+          { id: user.id, role: user.role },
+          TOKEN_KEY,
+          TOKEN_EXPIRY
+        );
         console.log("Logged In");
 
         res.status(200).json({ success: true, token });
