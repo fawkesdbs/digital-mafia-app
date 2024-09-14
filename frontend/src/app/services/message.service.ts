@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MessageService {
-  private readonly apiUrl = 'http://localhost:3000/messages';
+  private readonly apiUrl = 'http://localhost:3000/api/messages';
 
   constructor(private http: HttpClient) {}
 
@@ -23,6 +23,6 @@ export class MessageService {
   }
 
   getMessages(userId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/private/userId=${userId}`);
+    return this.http.get(`${this.apiUrl}/private/${userId}`);
   }
 }

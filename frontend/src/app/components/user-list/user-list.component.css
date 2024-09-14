@@ -8,7 +8,9 @@ li {
   flex: 1 1 auto;
   display: flex;
   padding: 0.5em;
-  border: 0.0625 solid #1e3470;
+  justify-content: center;
+  border: 0.0625em solid #1e3470;
+  border-radius: 2em;
 }
 
 li:hover {

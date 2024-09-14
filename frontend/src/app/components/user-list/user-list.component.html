@@ -1,5 +1,5 @@
 <ul>
-  <li *ngFor="let user of users" (click)="selectUser(user)">
+  <li *ngFor="let user of filteredUsers" (click)="selectUser(user)">
     <p>{{ user.name }}</p>
   </li>
 </ul>

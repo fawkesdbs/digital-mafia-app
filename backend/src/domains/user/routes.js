@@ -17,6 +17,6 @@ router.post("/login", loginUser);
 router.get("/user-role/:id", verifyToken, getUserRole);
 router.get("/profile/:id", verifyToken, getProfile);
 router.put("/profile/:id", verifyToken, updateProfile);
-router.get("/users", verifyToken, checkAdmin, getUsers);
+router.get("/users", verifyToken, getUsers);
 
 module.exports = router;

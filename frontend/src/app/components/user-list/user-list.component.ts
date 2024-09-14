@@ -1,8 +1,8 @@
 import { UserService } from './../../services/user.service';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { io } from 'socket.io-client';
+import { CustomJwtPayload } from '../../interfaces/jwt.interfaces';
+import * as jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-user-list',
@@ -14,6 +14,11 @@ import { io } from 'socket.io-client';
 export class UserListComponent implements OnInit {
   @Output() userSelected = new EventEmitter<any>();
   users: any[] = [];
+  filteredUsers: any[] = [];
+
+  token = localStorage.getItem('authToken') || '';
+  decodedToken: CustomJwtPayload = jwt_decode.jwtDecode(this.token);
+  userId: string = this.decodedToken.id;
 
   constructor(private userService: UserService) {}
 
@@ -26,6 +31,9 @@ export class UserListComponent implements OnInit {
       (data) => {
         console.log('Users data:', data); // Debug log
         this.users = data; // Ensure this matches the API response format
+        this.filteredUsers = this.users.filter(
+          (user) => user.id !== this.userId
+        );
       },
       (error) => {
         console.error('Error fetching users:', error); // Error log

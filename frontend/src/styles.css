@@ -1,6 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./assets/css/angular-calendar.css";
 
+:root {
+  --background-color: #f4f6ff;
+}
+
+.dark-theme {
+  --background-color: #353845;
+}
+
 *,
 *::before,
 *::after {
@@ -43,7 +51,7 @@ input:focus {
 }
 
 body {
-  background-color: #f4f6ff;
+  background-color: var(--background-color);
 }
 
 ul {

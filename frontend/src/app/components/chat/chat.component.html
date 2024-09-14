@@ -1,16 +1,23 @@
 <div *ngIf="selectedUser" class="chat-container">
   <h2>Chat with {{ selectedUser.name }}</h2>
   <div class="messages">
-    <div *ngFor="let message of messages">
-      <p>{{ message.content }}</p>
+    <div class="message" *ngFor="let message of messages">
+      <p
+        [ngClass]="{
+          myMessage: message.senderId === userId,
+          otherMessage: message.senderId !== userId
+        }"
+      >
+        {{ message.content }}
+      </p>
     </div>
   </div>
-  <form (ngSubmit)="sendMessage()">
+  <div class="form">
     <app-input
       [(value)]="newMessage"
       name="message"
       placeholder="Type a message"
     />
-    <button type="submit" class="primary-btn">Send</button>
-  </form>
+    <button (click)="sendMessage()" class="primary-btn">Send</button>
+  </div>
 </div>

@@ -2,7 +2,6 @@ import { MessageService } from './../../services/message.service';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { InputComponent } from '../input/input.component';
-import { Subscription } from 'rxjs';
 import { CustomJwtPayload } from '../../interfaces/jwt.interfaces';
 import * as jwt_decode from 'jwt-decode';
 
