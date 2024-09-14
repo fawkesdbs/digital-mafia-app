@@ -1,0 +1,8 @@
+<div class="messaging-layout">
+  <div class="user-list">
+    <app-user-list (userSelected)="onUserSelected($event)"></app-user-list>
+  </div>
+  <div class="chat">
+    <app-chat [selectedUser]="selectedUser"></app-chat>
+  </div>
+</div>

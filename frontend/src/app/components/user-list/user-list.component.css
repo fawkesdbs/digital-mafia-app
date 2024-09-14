@@ -1,0 +1,20 @@
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+li {
+  flex: 1 1 auto;
+  display: flex;
+  padding: 0.5em;
+  border: 0.0625 solid #1e3470;
+}
+
+li:hover {
+  cursor: pointer;
+}
+
+p {
+  font-size: 1em;
+}
