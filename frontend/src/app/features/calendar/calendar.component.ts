@@ -8,6 +8,7 @@ import { TimeEntry, TimeEntryService } from '../../services/time-entry.service';
 import { InputComponent } from '../../components/input/input.component';
 import { addHours } from 'date-fns';
 import { catchError, of } from 'rxjs';
+import { GoogleAuthService } from '../../services/google-auth.service'; // Import GoogleAuthService
 
 @Component({
   selector: 'app-calendar',
@@ -32,12 +33,15 @@ export class CalendarComponent implements OnInit {
     date: '',
     hours: '0',
     description: '',
-    type: 'event', // Default to 'event'
+    type: 'event',
   };
   date = '';
   time = '';
 
-  constructor(private timeEntryService: TimeEntryService) {}
+  constructor(
+    private timeEntryService: TimeEntryService,
+    private googleAuthService: GoogleAuthService // Inject GoogleAuthService
+  ) {}
 
   ngOnInit(): void {
     this.loadTimeEntries();
@@ -50,9 +54,9 @@ export class CalendarComponent implements OnInit {
     this.timeEntryService
       .getTimeEntries(this.userId, startDate, endDate)
       .pipe(
-        catchError((error) => {
+        catchError((error: any) => {
           console.error('Error loading time entries:', error);
-          return of([] as TimeEntry[]); // Return an empty array of TimeEntry
+          return of([] as TimeEntry[]);
         })
       )
       .subscribe((entries) => {
@@ -83,39 +87,73 @@ export class CalendarComponent implements OnInit {
     return `${now.getFullYear()}-${month}-${lastDay.getDate()}`;
   }
 
-  createEntry(): void {
-    this.newEntry.date = `${this.date}T${this.time}:00.000+02:00`;
-      // No future date validation needed for events
-      this.timeEntryService
-        .createTimeEntry(this.newEntry)
-        .pipe(
-          catchError((error) => {
-            console.error('Error creating entry:', error);
-            const errorMessage =
-              error.error || 'Failed to create event. Please try again.';
-            alert(errorMessage);
-            return of(null);
-          })
-        )
-        .subscribe(() => {
-          this.loadTimeEntries();
-          this.newEntry = {
-            userId: this.userId,
-            date: '',
-            hours: '0',
-            description: '',
-            type: 'event', // Reset type to 'event'
-          };
-        });
-    }
-  
-    dayClicked({ date }: { date: Date }): void {
-      this.view = CalendarView.Day;
-      this.viewDate = date;
-    }
-  
-    onViewChange(view: CalendarView) {
-      this.view = view;
+  async createEntry(): Promise<void> {
+    try {
+      // Google Calendar integration
+      await this.googleAuthService.signIn();
+      const token = this.googleAuthService.getAuthToken();
+      if (!token) throw new Error('Google authentication failed');
+
+      const event = {
+        summary: this.newEntry.description,
+        start: {
+          dateTime: new Date(`${this.date}T${this.time}:00Z`).toISOString(), // Use UTC
+          timeZone: 'UTC',
+        },
+        end: {
+          dateTime: new Date(`${this.date}T${this.time}:00Z`).toISOString(), // Use UTC
+          timeZone: 'UTC',
+        },
+      };
+
+      await this.addGoogleCalendarEvent(token, event);
+
+      // Existing logic to create time entry
+      this.newEntry.date = `${this.date}T${this.time}:00.000+02:00`;
+      await this.timeEntryService.createTimeEntry(this.newEntry).toPromise();
+      this.loadTimeEntries();
+      this.newEntry = {
+        userId: this.userId,
+        date: '',
+        hours: '0',
+        description: '',
+        type: 'event',
+      };
+    } catch (error) {
+      console.error('Error creating entry:', error);
+      alert('Failed to create event. Please try again.');
     }
   }
-  
+
+  private async addGoogleCalendarEvent(token: string, event: any): Promise<void> {
+    try {
+      const response = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(event),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error.message || 'Failed to create Google Calendar event');
+      }
+
+      console.log('Event added successfully');
+    } catch (error) {
+      console.error('Error adding Google Calendar event:', error);
+      alert('Failed to add Google Calendar event. Please try again.');
+    }
+  }
+
+  dayClicked({ date }: { date: Date }): void {
+    this.view = CalendarView.Day;
+    this.viewDate = date;
+  }
+
+  onViewChange(view: CalendarView) {
+    this.view = view;
+  }
+}
