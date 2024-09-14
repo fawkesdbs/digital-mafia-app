@@ -1,14 +1,16 @@
+// sidebar.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CustomJwtPayload } from '../../interfaces/jwt.interfaces';
 import * as jwt_decode from 'jwt-decode';
+import { MessageInputComponent } from '../chat/message-input/message-input.component';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterModule],
+  imports: [CommonModule, RouterLink, RouterModule, MessageInputComponent],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
@@ -23,7 +25,7 @@ export class SidebarComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.isAdmin = this.authService.isAdmin(); // Determine if the user is an admin
+    this.isAdmin = this.authService.isAdmin();
   }
 
   toggleSidebar(): void {
@@ -37,7 +39,13 @@ export class SidebarComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout(); // Call logout method from AuthService
-    this.router.navigate(['/login']); // Redirect to login page after logout
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  openChatRoom(): void {
+    // Pass a default or test userId, or adapt as needed
+    const testUserId = 1; // Replace with actual userId if required
+    this.router.navigate(['/chat-room', testUserId]);
   }
 }

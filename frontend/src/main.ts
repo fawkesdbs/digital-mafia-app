@@ -23,6 +23,7 @@ import { AdminApprovalComponent } from './app/features/admin-approval/admin-appr
 import { UserOverviewComponent } from './app/features/user-overview/user-overview.component';
 import { ForgotPasswordComponent } from './app/features/forgot-password/forgot-password.component';
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
+import { ChatRoomComponent } from './app/components/chat/chat-room/chat-room.component';
 
 const routes: Routes = [
   { path: 'page-not-found', component: PageNotFoundComponent },
@@ -45,6 +46,7 @@ const routes: Routes = [
       { path: 'profile/:id', component: ProfileComponent },
       { path: 'calendar', component: CalendarComponent },
       { path: 'time-log', component: TimeTrackerComponent },
+      { path: 'chat-room', component: ChatRoomComponent },
       {
         path: 'admin-approval',
         component: AdminApprovalComponent,
