@@ -100,8 +100,6 @@ Meet the team:
 | Name                 | @github         |
 | -------------------- | --------------- |
 | Khomotso Kumalo      | @KhomotsoKumalo |
-| Masilo Makola        | @Makola1Goated  |
 | Siphamandla Mazibuko | @fawkesdbs      |
-| Obakeng Mokgatle     | @sobb1e         |
 
 We appreciate the opportunity given and we hope you enjoy the app.
