@@ -6,21 +6,27 @@
 >
   <ul>
     <li>
-      <a [routerLink]="['/dashboard']">
-        <span class="material-symbols-outlined">finance</span>
-        <span class="text" *ngIf="isSidebarExpanded">Dashboard</span>
-      </a>
+      <a [routerLink]="['/dashboard']"
+        ><span class="material-symbols-outlined"> finance </span>
+        <span class="text" *ngIf="isSidebarExpanded">Dashboard</span></a
+      >
     </li>
     <li>
-      <a (click)="goToProfile()">
-        <span class="material-symbols-outlined">person</span>
-        <span class="text" *ngIf="isSidebarExpanded">Profile</span>
-      </a>
+      <a [routerLink]="['/tasks']"
+        ><span class="material-symbols-outlined"> task </span>
+        <span class="text" *ngIf="isSidebarExpanded">Tasks</span></a
+      >
     </li>
     <li>
       <a [routerLink]="['/time-log']">
         <span class="material-symbols-outlined">timeline</span>
         <span class="text" *ngIf="isSidebarExpanded">Time Log</span>
+      </a>
+    </li>
+    <li>
+      <a [routerLink]="['/message']">
+        <span class="material-symbols-outlined">message</span>
+        <span class="text" *ngIf="isSidebarExpanded">Messaging</span>
       </a>
     </li>
     <li>
@@ -45,13 +51,6 @@
         </a>
       </li>
     </ng-container>
-
-    <li>
-      <a [routerLink]="['/chat-room']">
-      <span class="material-symbols-outlined">chat</span>
-      <span class="text" *ngIf="isSidebarExpanded">Chat</span>
-    </a>
-    </li>
 
     <li class="logout-btn">
       <button (click)="logout()">

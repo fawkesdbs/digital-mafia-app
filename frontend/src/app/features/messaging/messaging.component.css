@@ -1,0 +1,15 @@
+.messaging-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.user-list {
+  width: 300px;
+  border-right: 1px solid #ddd;
+  padding: 10px;
+}
+
+.chat {
+  flex: 1;
+  padding: 10px;
+}

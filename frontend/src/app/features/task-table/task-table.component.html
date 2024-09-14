@@ -1,0 +1,73 @@
+<div class="task-table-container">
+  <div class="task-header">
+    <div class="task-filters">
+      <app-input
+        placeholder="Search tasks"
+        [(value)]="search"
+        [required]="false"
+        (input)="onSearchChange($event)"
+      ></app-input>
+
+      <select (change)="onPriorityChange($event)">
+        <option value="">All Priorities</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+
+      <select (change)="onUserRoleChange($event)">
+        <option value="">All Roles</option>
+        <option value="user1">Admin</option>
+        <option value="user2">User</option>
+      </select>
+    </div>
+
+    <button (click)="openTaskForm()" class="primary-btn">Create Task</button>
+
+    <app-task-form
+      [isVisible]="isModalVisible"
+      #taskForm
+      (formSubmit)="handleFormSubmit($event)"
+    ></app-task-form>
+  </div>
+
+  <div class="pagination">
+    <button
+      (click)="onPageChange(currentPage - 1)"
+      class="secondary-btn"
+      [disabled]="currentPage === 1"
+    >
+      Previous
+    </button>
+    <span>Page {{ currentPage }} of {{ totalTasks / pageSize | ceil }}</span>
+    <button
+      (click)="onPageChange(currentPage + 1)"
+      class="secondary-btn"
+      [disabled]="currentPage * pageSize >= totalTasks"
+    >
+      Next
+    </button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Priority</th>
+        <th>User</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of paginatedTasks">
+        <td>{{ task.title }}</td>
+        <td>{{ task.description }}</td>
+        <td>{{ task.startDate }}</td>
+        <td>{{ task.endDate }}</td>
+        <td>{{ task.priority }}</td>
+        <td>{{ task.userRole }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

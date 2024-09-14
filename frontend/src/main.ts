@@ -22,8 +22,10 @@ import { importProvidersFrom } from '@angular/core';
 import { AdminApprovalComponent } from './app/features/admin-approval/admin-approval.component';
 import { UserOverviewComponent } from './app/features/user-overview/user-overview.component';
 import { ForgotPasswordComponent } from './app/features/forgot-password/forgot-password.component';
-import { FormsModule } from '@angular/forms';  // Import FormsModule here
-import { ChatRoomComponent } from './app/components/chat/chat-room/chat-room.component';
+import { FormsModule } from '@angular/forms'; // Import FormsModule here
+import { TaskTableComponent } from './app/features/task-table/task-table.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MessagingComponent } from './app/features/messaging/messaging.component';
 
 const routes: Routes = [
   { path: 'page-not-found', component: PageNotFoundComponent },
@@ -46,7 +48,8 @@ const routes: Routes = [
       { path: 'profile/:id', component: ProfileComponent },
       { path: 'calendar', component: CalendarComponent },
       { path: 'time-log', component: TimeTrackerComponent },
-      { path: 'chat-room', component: ChatRoomComponent },
+      { path: 'message', component: MessagingComponent },
+      { path: 'tasks', component: TaskTableComponent },
       {
         path: 'admin-approval',
         component: AdminApprovalComponent,
@@ -71,7 +74,7 @@ bootstrapApplication(AppComponent, {
         provide: DateAdapter,
         useFactory: adapterFactory,
       }),
-      FormsModule  // Include FormsModule here
+      FormsModule // Include FormsModule here
     ),
     provideHttpClient(),
     provideHttpClient(withFetch()),
@@ -80,5 +83,6 @@ bootstrapApplication(AppComponent, {
     UserService,
     AdminGuard,
     AuthGuard,
+    provideAnimationsAsync(),
   ],
 }).catch((err) => console.error(err));

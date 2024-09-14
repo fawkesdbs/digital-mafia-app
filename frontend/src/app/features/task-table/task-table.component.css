@@ -1,0 +1,49 @@
+.task-table-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.task-header {
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.task-filters {
+  display: flex;
+  gap: 0.5em;
+}
+
+.task-header .primary-btn {
+  position: absolute;
+  right: 0;
+}
+
+table {
+  border: 0.125em solid #1e3470;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+th,
+td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #1a3fa3; /* Background color for headers */
+  color: #fff;
+  font-weight: bold;
+}
+
+td {
+  background-color: #f4f6ff;
+}
+
+tr:hover td {
+  background-color: #e0f7fa;
+}
