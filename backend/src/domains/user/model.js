@@ -15,7 +15,7 @@ const User = sequelize.define(
     },
     surname: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true, // Optional
     },
     email: {
       type: DataTypes.STRING,
@@ -24,15 +24,15 @@ const User = sequelize.define(
     },
     phoneNumber: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true, // Optional
     },
     birthDate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true, // Optional
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true, // Can be null for Google auth
     },
     role: {
       type: DataTypes.STRING,
@@ -45,3 +45,4 @@ const User = sequelize.define(
 );
 
 module.exports = User;
+

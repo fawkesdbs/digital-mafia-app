@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { InputComponent } from '../../components/input/input.component';
@@ -11,9 +11,9 @@ import { UserService } from '../../services/user.service';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule, InputComponent],
   templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.css',
+  styleUrls: ['./sign-up.component.css'],
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit {
   user = {
     name: '',
     surname: '',
@@ -24,9 +24,12 @@ export class SignUpComponent {
     role: '',
   };
   confirmPassword: string = '';
-  apiUrl = 'http://localhost:3000/api/user/register';
 
   constructor(private userService: UserService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.initializeGoogleSignUp();
+  }
 
   onSubmit() {
     if (this.user.password !== this.confirmPassword) {
@@ -52,4 +55,43 @@ export class SignUpComponent {
         }
       });
   }
-}
+
+  initializeGoogleSignUp(): void {
+    gapi.load('auth2', () => {
+      const auth2 = gapi.auth2.init({
+        client_id: '614257370060-4nk9tssa768onb8u28ccen9ri26borou.apps.googleusercontent.com', // Replace with your Google OAuth 2.0 Client ID
+        scope: 'profile email',
+      });
+
+      auth2.attachClickHandler(
+        document.getElementById('googleSignUpBtn')!,
+        {},
+        (googleUser: gapi.auth2.GoogleUser) => {
+          const idToken = googleUser.getAuthResponse().id_token;
+          this.handleGoogleSignUp(idToken);
+        },
+        (error: any) => {
+          console.error('Google Sign-Up error:', error);
+        }
+      );
+    });
+  }
+
+  handleGoogleSignUp(idToken: string): void {
+    this.userService.verifyGoogleToken(idToken, true).subscribe({
+      next: (response: any) => {
+        localStorage.setItem('authToken', response.token);
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error: any) => {
+        if (error.error === 'popup_closed_by_user') {
+          console.warn('Google Sign-Up was canceled by the user.');
+          alert('Sign-Up was canceled. Please try again.');
+        } else {
+          console.error('Error verifying Google token:', error);
+          alert('Google sign-up failed. Please try again.');
+        }
+      }
+    });
+  }
+}  

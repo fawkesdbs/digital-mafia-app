@@ -4,6 +4,64 @@ const { hashData, verifyHashedData } = require("../../util/hashData");
 const createToken = require("../../util/createToken");
 const { TOKEN_KEY, TOKEN_EXPIRY } = process.env;
 
+const { OAuth2Client } = require('google-auth-library');
+const CLIENT_ID = '614257370060-4nk9tssa768onb8u28ccen9ri26borou.apps.googleusercontent.com'; // Replace with your Google Client ID
+const client = new OAuth2Client(CLIENT_ID);
+
+const registerWithGoogle = async (req, res) => {
+  const { idToken } = req.body;
+
+  if (!idToken) {
+    return res.status(400).send("ID Token is required");
+  }
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name } = payload;
+
+    // Check if the user already exists
+    let user = await User.findOne({ where: { email } });
+    if (user) {
+      // User exists, proceed with login
+      const token = await createToken(
+        { id: user.id, role: user.role },
+        TOKEN_KEY,
+        TOKEN_EXPIRY
+      );
+      return res.status(200).json({ success: true, token });
+    }
+
+    // User does not exist, create a new user
+    user = await User.create({
+      email,
+      name: name || 'Unknown', // Default value if name is missing
+      surname: '',
+      phoneNumber: '',
+      birthDate: new Date(),
+      password: '', // Empty or default value
+      role: 'user',
+      fromGoogle: true, // Indicate that this registration is from Google
+    });
+
+    const token = await createToken(
+      { id: user.id, role: user.role },
+      TOKEN_KEY,
+      TOKEN_EXPIRY
+    );
+
+    res.status(201).json({ success: true, token });
+  } catch (error) {
+    console.error("Error with Google Sign-Up:", error.message);
+    res.status(500).send("Error with Google Sign-Up");
+  }
+};
+
+
 const checkUser = async (req, res) => {
   const { email } = req.body;
 
@@ -21,19 +79,10 @@ const checkUser = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-  const { name, surname, email, phoneNumber, birthDate, password, role } =
-    req.body;
+  const { name, surname, email, phoneNumber, birthDate, password, role, fromGoogle } = req.body;
 
-  // Validate required fields
-  if (
-    !name ||
-    !surname ||
-    !email ||
-    !phoneNumber ||
-    !birthDate ||
-    !password ||
-    !role
-  ) {
+  // Skip validation if fromGoogle is true
+  if (!fromGoogle && (!name || !surname || !email || !phoneNumber || !birthDate || !password || !role)) {
     return res.status(400).send("All fields are required");
   }
 
@@ -45,17 +94,16 @@ const registerUser = async (req, res) => {
     }
 
     // Create new user
-    const hashedPassword = await hashData(password);
+    const hashedPassword = !fromGoogle ? await hashData(password) : '';
     const newUser = await User.create({
-      name,
-      surname,
+      name: fromGoogle ? 'Unknown' : name,
+      surname: fromGoogle ? '' : surname,
       email,
-      phoneNumber,
-      birthDate,
+      phoneNumber: fromGoogle ? '' : phoneNumber,
+      birthDate: fromGoogle ? new Date() : birthDate,
       password: hashedPassword,
-      role,
+      role: fromGoogle ? 'user' : role,
     });
-    console.log(newUser);
 
     res.status(201).send("User registered successfully");
   } catch (error) {
@@ -63,6 +111,7 @@ const registerUser = async (req, res) => {
     res.status(500).send("Error registering user");
   }
 };
+
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -190,4 +239,5 @@ module.exports = {
   updateProfile,
   getUserRole,
   getUsers,
+  registerWithGoogle,
 };
