@@ -12,9 +12,9 @@
       >
     </li>
     <li>
-      <a (click)="goToProfile()"
-        ><span class="material-symbols-outlined"> person </span>
-        <span class="text" *ngIf="isSidebarExpanded">Profile</span></a
+      <a [routerLink]="['/tasks']"
+        ><span class="material-symbols-outlined"> task </span>
+        <span class="text" *ngIf="isSidebarExpanded">Tasks</span></a
       >
     </li>
     <li>
@@ -24,44 +24,37 @@
       >
     </li>
     <li>
-      <a [routerLink]="['/time-log']"
-        ><span class="material-symbols-outlined"> timeline </span>
-        <span class="text" *ngIf="isSidebarExpanded">Time Log</span></a
-      >
+      <a [routerLink]="['/time-log']">
+        <span class="material-symbols-outlined">timeline</span>
+        <span class="text" *ngIf="isSidebarExpanded">Time Log</span>
+      </a>
     </li>
     <li>
-      <a [routerLink]="['/calendar']"
-        ><span class="material-symbols-outlined"> event </span>
-        <span class="text" *ngIf="isSidebarExpanded">Calendar</span></a
-      >
-    </li>
-
-    <li>
-      <a [routerLink]="['/chatroom']"
-        ><span class="material-symbols-outlined"> chat </span>
-        <span class="text" *ngIf="isSidebarExpanded">Chatroom</span></a
-      >
+      <a [routerLink]="['/calendar']">
+        <span class="material-symbols-outlined">event</span>
+        <span class="text" *ngIf="isSidebarExpanded">Calendar</span>
+      </a>
     </li>
 
     <!-- Admin-specific options -->
     <ng-container *ngIf="isAdmin">
       <li>
-        <a [routerLink]="['/admin-approval']"
-          ><span class="material-symbols-outlined"> admin_panel_settings </span>
-          <span class="text" *ngIf="isSidebarExpanded">Admin Approval</span></a
-        >
+        <a [routerLink]="['/admin-approval']">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
+          <span class="text" *ngIf="isSidebarExpanded">Admin Approval</span>
+        </a>
       </li>
       <li>
-        <a [routerLink]="['/user-overview']"
-          ><span class="material-symbols-outlined"> group </span>
-          <span class="text" *ngIf="isSidebarExpanded">User Overview</span></a
-        >
+        <a [routerLink]="['/user-overview']">
+          <span class="material-symbols-outlined">group</span>
+          <span class="text" *ngIf="isSidebarExpanded">User Overview</span>
+        </a>
       </li>
     </ng-container>
 
     <li class="logout-btn">
       <button (click)="logout()">
-        <span class="material-symbols-outlined logout-icon"> logout </span>
+        <span class="material-symbols-outlined logout-icon">logout</span>
         <span class="text" *ngIf="isSidebarExpanded">Logout</span>
       </button>
     </li>

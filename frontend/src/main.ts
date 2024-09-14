@@ -22,7 +22,8 @@ import { importProvidersFrom } from '@angular/core';
 import { AdminApprovalComponent } from './app/features/admin-approval/admin-approval.component';
 import { UserOverviewComponent } from './app/features/user-overview/user-overview.component';
 import { ForgotPasswordComponent } from './app/features/forgot-password/forgot-password.component';
-import { FormsModule } from '@angular/forms';  // Import FormsModule here
+import { FormsModule } from '@angular/forms'; // Import FormsModule here
+import { ChatRoomComponent } from './app/components/chat/chat-room/chat-room.component';
 import { TaskTableComponent } from './app/features/task-table/task-table.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -47,6 +48,7 @@ const routes: Routes = [
       { path: 'profile/:id', component: ProfileComponent },
       { path: 'calendar', component: CalendarComponent },
       { path: 'time-log', component: TimeTrackerComponent },
+      { path: 'chat-room', component: ChatRoomComponent },
       { path: 'tasks', component: TaskTableComponent },
       {
         path: 'admin-approval',
@@ -72,7 +74,7 @@ bootstrapApplication(AppComponent, {
         provide: DateAdapter,
         useFactory: adapterFactory,
       }),
-      FormsModule  // Include FormsModule here
+      FormsModule // Include FormsModule here
     ),
     provideHttpClient(),
     provideHttpClient(withFetch()),
@@ -80,6 +82,7 @@ bootstrapApplication(AppComponent, {
     AuthService,
     UserService,
     AdminGuard,
-    AuthGuard, provideAnimationsAsync(),
+    AuthGuard,
+    provideAnimationsAsync(),
   ],
 }).catch((err) => console.error(err));

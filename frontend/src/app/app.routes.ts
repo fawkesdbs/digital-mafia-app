@@ -10,6 +10,8 @@ import { PageNotFoundComponent } from './features/page-not-found/page-not-found.
 import { AdminApprovalComponent } from './features/admin-approval/admin-approval.component';
 import { UserOverviewComponent } from './features/user-overview/user-overview.component';
 import { TaskTableComponent } from './features/task-table/task-table.component';
+import { ChatListComponent } from './components/chat/chat-list/chat-list.component';
+import { ChatRoomComponent } from './components/chat/chat-room/chat-room.component';
 
 export const routes: Routes = [
   { path: 'page-not-found', component: PageNotFoundComponent },
@@ -23,6 +25,9 @@ export const routes: Routes = [
       { path: 'calendar', component: CalendarComponent },
       { path: 'time-log', component: TimeTrackerComponent },
       { path: 'tasks', component: TaskTableComponent },
+      { path: 'chat-list', component: ChatListComponent },
+      { path: 'chat-room/:userId', component: ChatRoomComponent },
+      { path: 'chat-room', component: ChatRoomComponent },
       {
         path: 'admin-approval',
         component: AdminApprovalComponent,
