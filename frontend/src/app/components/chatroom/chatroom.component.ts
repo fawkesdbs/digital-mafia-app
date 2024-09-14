@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { SocketService } from '../../services/socket.service';
 import { AuthService } from '../../services/auth.service';
@@ -6,9 +7,9 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-chatroom',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './chatroom.component.html',
-  styleUrls: ['./chatroom.component.css']
+  styleUrls: ['./chatroom.component.css'],
 })
 export class ChatroomComponent implements OnInit {
   messages: any[] = [];
@@ -40,7 +41,11 @@ export class ChatroomComponent implements OnInit {
   // Send a message
   sendMessage(): void {
     if (this.messageInput.trim()) {
-      this.socketService.sendMessage(this.sender, this.receiver, this.messageInput);
+      this.socketService.sendMessage(
+        this.sender,
+        this.receiver,
+        this.messageInput
+      );
       this.messageInput = ''; // Clear input after sending
     }
   }

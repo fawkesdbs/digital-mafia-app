@@ -18,6 +18,12 @@
       >
     </li>
     <li>
+      <a [routerLink]="['/tasks']"
+        ><span class="material-symbols-outlined"> task </span>
+        <span class="text" *ngIf="isSidebarExpanded">Tasks</span></a
+      >
+    </li>
+    <li>
       <a [routerLink]="['/time-log']"
         ><span class="material-symbols-outlined"> timeline </span>
         <span class="text" *ngIf="isSidebarExpanded">Time Log</span></a

@@ -9,6 +9,7 @@ import { TimeTrackerComponent } from './features/time-tracker/time-tracker.compo
 import { PageNotFoundComponent } from './features/page-not-found/page-not-found.component';
 import { AdminApprovalComponent } from './features/admin-approval/admin-approval.component';
 import { UserOverviewComponent } from './features/user-overview/user-overview.component';
+import { TaskTableComponent } from './features/task-table/task-table.component';
 
 export const routes: Routes = [
   { path: 'page-not-found', component: PageNotFoundComponent },
@@ -21,6 +22,7 @@ export const routes: Routes = [
       { path: 'profile/:id', component: ProfileComponent },
       { path: 'calendar', component: CalendarComponent },
       { path: 'time-log', component: TimeTrackerComponent },
+      { path: 'tasks', component: TaskTableComponent },
       {
         path: 'admin-approval',
         component: AdminApprovalComponent,

@@ -1,0 +1,49 @@
+<div class="modal-overlay" *ngIf="isVisible">
+  <div class="modal-content">
+    <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+      <app-input
+        label="Title:"
+        placeholder="e.g. Task Title"
+        [(value)]="task.title"
+        [required]="true"
+      ></app-input>
+      <app-input
+        type="textarea"
+        label="Description:"
+        placeholder="e.g. Task Description"
+        [(value)]="task.description"
+        [required]="false"
+      ></app-input>
+      <app-input
+        type="date"
+        label="Start Date:"
+        [(value)]="task.startDate"
+        [required]="true"
+      ></app-input>
+      <app-input
+        type="date"
+        label="End Date:"
+        [(value)]="task.endDate"
+        [required]="true"
+      ></app-input>
+      <div class="select-group">
+        <select [(ngModel)]="task.priority" name="priority" required>
+          <option hidden disabled selected value>
+            -- Choose Priority Level --
+          </option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+
+        <select [(ngModel)]="task.userRole" name="userRole" required>
+          <option hidden disabled selected value>-- Select Role --</option>
+          <option value="user1">Admin</option>
+          <option value="user2">User</option>
+        </select>
+      </div>
+      <button type="submit" class="primary-btn">Save</button>
+      <button type="button" class="danger-btn" (click)="close()">Cancel</button>
+    </form>
+  </div>
+</div>

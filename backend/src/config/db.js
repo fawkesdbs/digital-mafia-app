@@ -68,6 +68,15 @@ const createTablesAndInsertDefaultUser = async (connection, dbName) => {
       PRIMARY KEY (id),
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )`,
+      `CREATE TABLE IF NOT EXISTS messages (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      sender_id INT NOT NULL,
+      receiver_id INT NOT NULL,
+      content TEXT NOT NULL,
+      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (sender_id) REFERENCES users(id),
+      FOREIGN KEY (receiver_id) REFERENCES users(id)
+      )`,
       `CREATE TABLE IF NOT EXISTS OTP (
       id INT NOT NULL AUTO_INCREMENT,
       email VARCHAR(255) NOT NULL UNIQUE,
@@ -75,6 +84,18 @@ const createTablesAndInsertDefaultUser = async (connection, dbName) => {
       createdAt DATETIME NOT NULL,
       expiresAt DATETIME NOT NULL,
       PRIMARY KEY (id)
+      );`,
+      `CREATE TABLE IF NOT EXISTS tasks (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      description TEXT,
+      startDate DATE NOT NULL,
+      endDate DATE NOT NULL,
+      priority ENUM('low', 'medium', 'high') NOT NULL,
+      userRole VARCHAR(255) NOT NULL,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+      INDEX (priority),
+      INDEX (userRole)
       );`,
     ];
 

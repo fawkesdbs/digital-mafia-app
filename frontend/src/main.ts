@@ -23,6 +23,8 @@ import { AdminApprovalComponent } from './app/features/admin-approval/admin-appr
 import { UserOverviewComponent } from './app/features/user-overview/user-overview.component';
 import { ForgotPasswordComponent } from './app/features/forgot-password/forgot-password.component';
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
+import { TaskTableComponent } from './app/features/task-table/task-table.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 const routes: Routes = [
   { path: 'page-not-found', component: PageNotFoundComponent },
@@ -45,6 +47,7 @@ const routes: Routes = [
       { path: 'profile/:id', component: ProfileComponent },
       { path: 'calendar', component: CalendarComponent },
       { path: 'time-log', component: TimeTrackerComponent },
+      { path: 'tasks', component: TaskTableComponent },
       {
         path: 'admin-approval',
         component: AdminApprovalComponent,
@@ -77,6 +80,6 @@ bootstrapApplication(AppComponent, {
     AuthService,
     UserService,
     AdminGuard,
-    AuthGuard,
+    AuthGuard, provideAnimationsAsync(),
   ],
 }).catch((err) => console.error(err));
