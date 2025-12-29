@@ -2,6 +2,11 @@
 
 Digital Mafia is a full-stack employee dashboard application developed using Angular and Node.js for the 2024 Monkey and River Hackathon.
 
+## Context
+This project was developed during the Monkey and River Hackathon 2024.
+The focus was on rapid delivery of a role-based onboarding and administration
+platform within a constrained timeframe.
+
 ## How to run the app?
 
 What you need to do is clone the git repository to your local workspace then ensure that you have the following dependencies installed:
@@ -105,3 +110,4 @@ Meet the team:
 | Obakeng Mokgatle     | @sobb1e         |
 
 We appreciate the opportunity given and we hope you enjoy the app.
+
